@@ -1,6 +1,6 @@
 {
-  "name": "next-js-cli",
-  "displayName": "next-js-cli",
+  "name": "nextjs",
+  "displayName": "Next.js File Generator",
   "description": "This extension provides a suite of tools to streamline the development of Next.js applications directly within Visual Studio Code. From initializing new projects to generating component templates and API routes, Next.js Helper aims to boost your productivity and make building Next.js applications more efficient.",
   "version": "0.0.1",
   "engines": {
@@ -14,18 +14,145 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.createNextComponent",
-        "title": "Generate Next.js files",
-        "category": "Next.js CLI"
+        "command": "nextjs.files.all",
+        "title": "Create App router",
+        "category": "Next.js 1"
+      },
+      {
+        "command": "nextjs.file.page",
+        "title": "Generate page file",
+        "category": "Next.js",
+        "shortTitle": "Generate page"
+      },
+      {
+        "command": "nextjs.file.layout",
+        "title": "Generate layout file",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.error",
+        "title": "Generate error file",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.global-error",
+        "title": "Generate global-error file",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.not-found",
+        "title": "Generate no-found file",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.middleware",
+        "title": "Generate middleware file",
+        "category": "Next.js"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "nextjs.explorer.submenu",
+        "label": "Next.js File"
       }
     ],
     "menus": {
       "explorer/context": [
         {
-          "command": "extension.createNextComponent",
-          "group": "navigation"
+          "submenu": "nextjs.explorer.submenu",
+          "group": "2_workspace",
+          "when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot"
+        }
+      ],
+      "nextjs.explorer.submenu": [
+        {
+          "command": "nextjs.files.all",
+          "alt": "Generate page, layout, error and loading files.",
+          "group": "1_file"
+        },
+        {
+          "command": "nextjs.file.page",
+          "alt": "Generate page file",
+          "group": "2_file"
+        },
+        {
+          "command": "nextjs.file.error",
+          "alt": "Generate error file",
+          "group": "2_file"
+        },
+        {
+          "command": "nextjs.file.not-found",
+          "alt": "Generate no-found file",
+          "group": "2_file"
+        },
+        {
+          "command": "nextjs.file.layout",
+          "alt": "Generate layout file",
+          "group": "3_file"
+        },
+        {
+          "command": "nextjs.file.global-error",
+          "alt": "Generate global-error file",
+          "group": "4_file"
+        },
+        {
+          "command": "nextjs.file.middleware",
+          "alt": "Generate middleware file",
+          "group": "4_file"
         }
       ]
+    },
+    "configuration": {
+      "title": "Next.js File Generator",
+      "properties": {
+        "nextFileGenerator.fileExtension": {
+          "type": "string",
+          "default": ".tsx",
+          "enum": [
+            ".tsx",
+            ".jsx",
+            ".js",
+            ".ts"
+          ],
+          "description": "Default file extension for generated files (.tsx,.jsx, .js or .ts)."
+        },
+        "nextFileGenerator.templates": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "string",
+              "default": "export default function ${name}() { return <div>${name} Page</div>; }",
+              "description": "Template for generating Next.js page files. Use ${name} to insert the page function name."
+            },
+            "middleware": {
+              "type": "string",
+              "default": "import { NextRequest} from \"next/server\";\n\n// This function can be marked async if using await inside\nexport function middleware(request: NextRequest) {\n  // Middleware logic goes here\n}\n\nexport const config = {\n  matcher: \"\",\n};",
+              "description": "Template for generating layout files."
+            },
+            "loading": {
+              "type": "string",
+              "description": "Template for generating loading component files."
+            },
+            "error": {
+              "type": "string",
+              "description": "Template for generating error files."
+            },
+            "global-error": {
+              "type": "string",
+              "description": "Template for generating global-error file."
+            },
+            "not-found": {
+              "type": "string",
+              "description": "Template for generating not-found files."
+            },
+            "route": {
+              "type": "string",
+              "description": "Template for generating route file."
+            }
+          },
+          "description": "Templates for generating Next.js files. Use ${name} as a placeholder within templates."
+        }
+      }
     }
   },
   "scripts": {

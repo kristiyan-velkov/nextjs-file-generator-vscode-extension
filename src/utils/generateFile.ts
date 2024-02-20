@@ -1,6 +1,7 @@
 import fs from "fs-extra";
 import path from "path";
-import color from "ansi-colors";
+import * as vscode from "vscode";
+
 import {
   layoutTemplate,
   pageTemplate,
@@ -36,30 +37,24 @@ const templates: Record<string, TemplateFunction> = {
   routePut: routePutTemplate,
   routeHead: routeHeadTemplate,
 };
-export function generateFile(
+export const generateFile = async (
   type: string,
   customPath: string,
   name: string = "",
   customType: string = ""
-): void {
+): Promise<void> => {
   const fileName: string = `${type}.tsx`;
-  const directoryPath: string = path.join(process.cwd(), "app", customPath);
-  const filePath: string = path.join(directoryPath, fileName);
+  const filePath: string = path.join(customPath, fileName);
   const templateFunction: TemplateFunction | undefined =
     templates[customType || type];
-
-  if (!templateFunction) {
-    console.log(color.redBright(`Unsupported file type: ${type}`));
-    return;
-  }
 
   const template: string = templateFunction(name);
 
   if (!fs.existsSync(filePath)) {
-    fs.ensureDirSync(directoryPath);
+    fs.ensureDirSync(customPath);
     fs.writeFileSync(filePath, template);
-    console.log(color.greenBright(`File ${type} has been created.`));
+    vscode.window.showInformationMessage("File was created!");
   } else {
-    console.log(color.redBright(`File ${type} already exists.`));
+    vscode.window.showErrorMessage("File already exists.");
   }
-}
+};

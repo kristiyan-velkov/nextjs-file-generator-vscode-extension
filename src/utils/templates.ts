@@ -8,13 +8,17 @@ function validateName(name: string) {
 }
 
 export const pageTemplate = (pageName: string): string => {
-  return `export default function ${validateName(pageName)}Page() {
-  return <h1>Welcome to ${validateName(pageName)} page!</h1>;
+  const name = validateName(pageName);
+
+  return `export default function ${name}Page() {
+  return <h1>Welcome to ${name}page!</h1>;
 }`;
 };
 
 export const layoutTemplate = (layoutName: string): string => {
-  return `export default function ${validateName(layoutName)}Layout({
+  const name = validateName(layoutName);
+
+  return `export default function ${name}Layout({
   children,
 }: {
   children: React.ReactNode;
@@ -24,7 +28,8 @@ export const layoutTemplate = (layoutName: string): string => {
 };
 
 export const loadingTemplate = (loadingName: string): string => {
-  return `export default function ${validateName(loadingName)}Loading() {
+  const name = validateName(loadingName);
+  return `export default function ${name}Loading() {
   // Or a custom loading skeleton component
   return <p>Loading...</p>
 }`;
@@ -100,7 +105,8 @@ export default function NotFound() {
 };
 
 export const templateFile = (templateName: string): string => {
-  return `export default function ${validateName(templateName)}Template({
+  const name = validateName(templateName);
+  return `export default function ${name}Template({
   children,
 }: {
   children: React.ReactNode;

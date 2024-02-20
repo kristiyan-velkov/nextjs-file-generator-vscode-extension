@@ -47,7 +47,7 @@ function activate(context: vscode.ExtensionContext) {
     const fileExtension = config.get<string>("fileExtension", ".tsx");
     const template = config.get<TemplateConfig>("templates", {})[fileName];
 
-    return { fileExtension, template: template ?? null };
+    return { fileExtension, template: template ?? "" };
   }
 
   const generatePage = vscode.commands.registerCommand(
@@ -58,22 +58,14 @@ function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const { fileExtension, template } = getConfigurationSettings("page");
-      const pagefileTemplate: string = template ?? pageTemplate("");
-
-      const filePath = path.join(folderUri.fsPath, `page${fileExtension}`);
+      const type = "page";
+      const { fileExtension, template } = getConfigurationSettings(type);
 
       try {
-        await fs.promises.writeFile(filePath, pagefileTemplate, {
-          encoding: "utf8",
-        });
-        vscode.window.showInformationMessage(
-          `Page file was created successfully!`
-        );
+        await generateFile(type, folderUri.fsPath, template, fileExtension, "");
+        vscode.window.showInformationMessage("File was created successfully!");
       } catch (error) {
-        vscode.window.showErrorMessage(
-          `Error creating page: ${(error as Error).message}.`
-        );
+        vscode.window.showErrorMessage(`File creation failed: ${error}`);
       }
     }
   );

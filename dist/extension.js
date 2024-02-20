@@ -59,24 +59,21 @@ function activate(context) {
         const config = vscode.workspace.getConfiguration("nextFileGenerator");
         const fileExtension = config.get("fileExtension", ".tsx");
         const template = config.get("templates", {})[fileName];
-        return { fileExtension, template: template ?? null };
+        return { fileExtension, template: template ?? "" };
     }
     const generatePage = vscode.commands.registerCommand("nextjs.file.page", async (folderUri) => {
         if (!folderUri) {
             vscode.window.showErrorMessage("Folder not selected");
             return;
         }
-        const { fileExtension, template } = getConfigurationSettings("page");
-        const pagefileTemplate = template ?? (0, templates_1.pageTemplate)("");
-        const filePath = path.join(folderUri.fsPath, `page${fileExtension}`);
+        const type = "page";
+        const { fileExtension, template } = getConfigurationSettings(type);
         try {
-            await fs.promises.writeFile(filePath, pagefileTemplate, {
-                encoding: "utf8",
-            });
-            vscode.window.showInformationMessage(`Page file was created successfully!`);
+            await (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension, "");
+            vscode.window.showInformationMessage("File was created successfully!");
         }
         catch (error) {
-            vscode.window.showErrorMessage(`Error creating page: ${error.message}.`);
+            vscode.window.showErrorMessage(`File creation failed: ${error}`);
         }
     });
     const generateMiddleware = vscode.commands.registerCommand("nextjs.file.middleware", async (folderUri) => {
@@ -2948,29 +2945,6 @@ module.exports = moveSync
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -2978,9 +2952,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.generateFile = void 0;
 const fs_extra_1 = __importDefault(__webpack_require__(4));
 const path_1 = __importDefault(__webpack_require__(3));
-const vscode = __importStar(__webpack_require__(1));
 const templates_1 = __webpack_require__(45);
-const templates = {
+const defaultTemplates = {
     page: templates_1.pageTemplate,
     loading: templates_1.loadingTemplate,
     layout: templates_1.layoutTemplate,
@@ -2996,20 +2969,13 @@ const templates = {
     routePut: templates_1.routePutTemplate,
     routeHead: templates_1.routeHeadTemplate,
 };
-const generateFile = async (type, customPath, name = "", customType = "") => {
-    const fileName = `${type}.tsx`;
-    const filePath = path_1.default.join(customPath, fileName);
-    const templateFunction = templates[customType || type];
-    const template = templateFunction(name);
-    if (!fs_extra_1.default.existsSync(filePath)) {
-        fs_extra_1.default.ensureDirSync(customPath);
-        fs_extra_1.default.writeFileSync(filePath, template);
-        vscode.window.showInformationMessage("File was created!");
-    }
-    else {
-        vscode.window.showErrorMessage("File already exists.");
-    }
-};
+async function generateFile(type, filePath, fileTemplate, fileExtension = ".tsx", name = "", customType = "") {
+    const fileName = `${type}${fileExtension}`;
+    const pathToCreateFile = path_1.default.join(filePath, fileName);
+    const templateContent = fileTemplate || defaultTemplates[type || customType](name);
+    await fs_extra_1.default.ensureDir(filePath);
+    await fs_extra_1.default.writeFile(pathToCreateFile, templateContent, { encoding: "utf8" });
+}
 exports.generateFile = generateFile;
 
 
@@ -3029,13 +2995,15 @@ function validateName(name) {
     return cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1);
 }
 const pageTemplate = (pageName) => {
-    return `export default function ${validateName(pageName)}Page() {
-  return <h1>Welcome to ${validateName(pageName)} page!</h1>;
+    const name = validateName(pageName);
+    return `export default function ${name}Page() {
+  return <h1>Welcome to ${name}page!</h1>;
 }`;
 };
 exports.pageTemplate = pageTemplate;
 const layoutTemplate = (layoutName) => {
-    return `export default function ${validateName(layoutName)}Layout({
+    const name = validateName(layoutName);
+    return `export default function ${name}Layout({
   children,
 }: {
   children: React.ReactNode;
@@ -3045,7 +3013,8 @@ const layoutTemplate = (layoutName) => {
 };
 exports.layoutTemplate = layoutTemplate;
 const loadingTemplate = (loadingName) => {
-    return `export default function ${validateName(loadingName)}Loading() {
+    const name = validateName(loadingName);
+    return `export default function ${name}Loading() {
   // Or a custom loading skeleton component
   return <p>Loading...</p>
 }`;
@@ -3121,7 +3090,8 @@ export default function NotFound() {
 };
 exports.notFoundTemplate = notFoundTemplate;
 const templateFile = (templateName) => {
-    return `export default function ${validateName(templateName)}Template({
+    const name = validateName(templateName);
+    return `export default function ${name}Template({
   children,
 }: {
   children: React.ReactNode;

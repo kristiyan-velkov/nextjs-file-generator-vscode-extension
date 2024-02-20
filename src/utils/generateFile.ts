@@ -21,7 +21,7 @@ import {
 
 type TemplateFunction = (name: string) => string;
 
-const templates: Record<string, TemplateFunction> = {
+const defaultTemplates: Record<string, TemplateFunction> = {
   page: pageTemplate,
   loading: loadingTemplate,
   layout: layoutTemplate,
@@ -37,24 +37,20 @@ const templates: Record<string, TemplateFunction> = {
   routePut: routePutTemplate,
   routeHead: routeHeadTemplate,
 };
-export const generateFile = async (
+
+export async function generateFile(
   type: string,
-  customPath: string,
+  filePath: string,
+  fileTemplate: string,
+  fileExtension = ".tsx",
   name: string = "",
   customType: string = ""
-): Promise<void> => {
-  const fileName: string = `${type}.tsx`;
-  const filePath: string = path.join(customPath, fileName);
-  const templateFunction: TemplateFunction | undefined =
-    templates[customType || type];
+): Promise<void> {
+  const fileName = `${type}${fileExtension}`;
+  const pathToCreateFile = path.join(filePath, fileName);
+  const templateContent =
+    fileTemplate || defaultTemplates[type || customType](name);
 
-  const template: string = templateFunction(name);
-
-  if (!fs.existsSync(filePath)) {
-    fs.ensureDirSync(customPath);
-    fs.writeFileSync(filePath, template);
-    vscode.window.showInformationMessage("File was created!");
-  } else {
-    vscode.window.showErrorMessage("File already exists.");
-  }
-};
+  await fs.ensureDir(filePath);
+  await fs.writeFile(pathToCreateFile, templateContent, { encoding: "utf8" });
+}

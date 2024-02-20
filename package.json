@@ -15,38 +15,37 @@
     "commands": [
       {
         "command": "nextjs.files.all",
-        "title": "Create App router",
+        "title": "App router",
         "category": "Next.js 1"
       },
       {
         "command": "nextjs.file.page",
-        "title": "Generate page file",
-        "category": "Next.js",
-        "shortTitle": "Generate page"
+        "title": "page",
+        "category": "Next.js"
       },
       {
         "command": "nextjs.file.layout",
-        "title": "Generate layout file",
+        "title": "layout",
         "category": "Next.js"
       },
       {
         "command": "nextjs.file.error",
-        "title": "Generate error file",
+        "title": "error",
         "category": "Next.js"
       },
       {
         "command": "nextjs.file.global-error",
-        "title": "Generate global-error file",
+        "title": "global-error",
         "category": "Next.js"
       },
       {
         "command": "nextjs.file.not-found",
-        "title": "Generate no-found file",
+        "title": "not-found",
         "category": "Next.js"
       },
       {
         "command": "nextjs.file.middleware",
-        "title": "Generate middleware file",
+        "title": "middleware",
         "category": "Next.js"
       }
     ],
@@ -67,7 +66,7 @@
       "nextjs.explorer.submenu": [
         {
           "command": "nextjs.files.all",
-          "alt": "Generate page, layout, error and loading files.",
+          "alt": "App route",
           "group": "1_file"
         },
         {

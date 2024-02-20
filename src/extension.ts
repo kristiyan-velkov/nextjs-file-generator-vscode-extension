@@ -1,15 +1,18 @@
-import * as fs from "fs-extra";
 import * as vscode from "vscode";
 import * as path from "path";
 import { generateFile } from "./utils/generateFile";
-import {
-  errorTemplate,
-  layoutTemplate,
-  middlewareTemplate,
-  notFoundTemplate,
-  pageTemplate,
-  globalErrorsTemplate,
-} from "./utils/templates";
+
+interface TemplateConfig {
+  [key: string]: string | undefined; // Allows any string as a key with a string value or undefined
+}
+
+function getConfigurationSettings(fileName: string) {
+  const config = vscode.workspace.getConfiguration("nextFileGenerator");
+  const fileExtension = config.get<string>("fileExtension", ".tsx");
+  const template = config.get<TemplateConfig>("templates", {})[fileName];
+
+  return { fileExtension, template: template ?? "" };
+}
 
 function activate(context: vscode.ExtensionContext) {
   const generateAll = vscode.commands.registerCommand(
@@ -31,24 +34,27 @@ function activate(context: vscode.ExtensionContext) {
         targetPath = folderUri.fsPath;
       }
 
+      // const { fileExtension, template } = getConfigurationSettings("page");
+      // generateFile("page", folderUri.fsPath, template, fileExtension)
+      //   .then((fileCreated) => {
+      //     if (fileCreated) {
+      //       vscode.window.showInformationMessage(
+      //         "File was created successfully!"
+      //       );
+      //     } else {
+      //       vscode.window.showErrorMessage(`File already exists`);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     vscode.window.showErrorMessage(`File creation failed: ${error}`);
+      //   });
+
       generateFile("page", targetPath, "");
       generateFile("loading", targetPath, "");
       generateFile("error", targetPath, "");
       generateFile("not-found", targetPath, "");
     }
   );
-
-  interface TemplateConfig {
-    [key: string]: string | undefined; // Allows any string as a key with a string value or undefined
-  }
-
-  function getConfigurationSettings(fileName: string) {
-    const config = vscode.workspace.getConfiguration("nextFileGenerator");
-    const fileExtension = config.get<string>("fileExtension", ".tsx");
-    const template = config.get<TemplateConfig>("templates", {})[fileName];
-
-    return { fileExtension, template: template ?? "" };
-  }
 
   const generatePage = vscode.commands.registerCommand(
     "nextjs.file.page",
@@ -89,25 +95,22 @@ function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const { fileExtension, template } =
-        getConfigurationSettings("middleware");
-      const pagefileTemplate: string = template ?? middlewareTemplate();
+      const type = "middleware";
+      const { fileExtension, template } = getConfigurationSettings(type);
 
-      const filePath = path.join(
-        folderUri.fsPath,
-        `middleware${fileExtension}`
-      );
-
-      try {
-        await fs.promises.writeFile(filePath, pagefileTemplate, {
-          encoding: "utf8",
+      generateFile(type, folderUri.fsPath, template, fileExtension)
+        .then((fileCreated) => {
+          if (fileCreated) {
+            vscode.window.showInformationMessage(
+              "File was created successfully!"
+            );
+          } else {
+            vscode.window.showErrorMessage(`File already exists`);
+          }
+        })
+        .catch((error) => {
+          vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
-        vscode.window.showInformationMessage(`File was created successfully!`);
-      } catch (error) {
-        vscode.window.showErrorMessage(
-          `Error creating file: ${(error as Error).message}.`
-        );
-      }
     }
   );
 
@@ -119,21 +122,26 @@ function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const { fileExtension, template } = getConfigurationSettings("layout");
-      const pagefileTemplate: string = template ?? layoutTemplate("");
+      const name = await vscode.window.showInputBox({
+        placeHolder: "Enter the function name",
+      });
 
-      const filePath = path.join(folderUri.fsPath, `layout${fileExtension}`);
+      const type = "layout";
+      const { fileExtension, template } = getConfigurationSettings(type);
 
-      try {
-        await fs.promises.writeFile(filePath, pagefileTemplate, {
-          encoding: "utf8",
+      generateFile(type, folderUri.fsPath, template, fileExtension, name || "")
+        .then((fileCreated) => {
+          if (fileCreated) {
+            vscode.window.showInformationMessage(
+              "File was created successfully!"
+            );
+          } else {
+            vscode.window.showErrorMessage(`File already exists`);
+          }
+        })
+        .catch((error) => {
+          vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
-        vscode.window.showInformationMessage(`File was created successfully!`);
-      } catch (error) {
-        vscode.window.showErrorMessage(
-          `Error creating file: ${(error as Error).message}.`
-        );
-      }
     }
   );
 
@@ -145,21 +153,22 @@ function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const { fileExtension, template } = getConfigurationSettings("error");
-      const pagefileTemplate: string = template ?? errorTemplate();
+      const type = "error";
+      const { fileExtension, template } = getConfigurationSettings(type);
 
-      const filePath = path.join(folderUri.fsPath, `error${fileExtension}`);
-
-      try {
-        await fs.promises.writeFile(filePath, pagefileTemplate, {
-          encoding: "utf8",
+      generateFile(type, folderUri.fsPath, template, fileExtension)
+        .then((fileCreated) => {
+          if (fileCreated) {
+            vscode.window.showInformationMessage(
+              "File was created successfully!"
+            );
+          } else {
+            vscode.window.showErrorMessage(`File already exists`);
+          }
+        })
+        .catch((error) => {
+          vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
-        vscode.window.showInformationMessage(`File was created successfully!`);
-      } catch (error) {
-        vscode.window.showErrorMessage(
-          `Error creating file: ${(error as Error).message}.`
-        );
-      }
     }
   );
 
@@ -171,21 +180,22 @@ function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const { fileExtension, template } = getConfigurationSettings("not-found");
-      const pagefileTemplate: string = template ?? notFoundTemplate();
+      const type = "not-found";
+      const { fileExtension, template } = getConfigurationSettings(type);
 
-      const filePath = path.join(folderUri.fsPath, `not-found${fileExtension}`);
-
-      try {
-        await fs.promises.writeFile(filePath, pagefileTemplate, {
-          encoding: "utf8",
+      generateFile(type, folderUri.fsPath, template, fileExtension)
+        .then((fileCreated) => {
+          if (fileCreated) {
+            vscode.window.showInformationMessage(
+              "File was created successfully!"
+            );
+          } else {
+            vscode.window.showErrorMessage(`File already exists`);
+          }
+        })
+        .catch((error) => {
+          vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
-        vscode.window.showInformationMessage(`File was created successfully!`);
-      } catch (error) {
-        vscode.window.showErrorMessage(
-          `Error creating file: ${(error as Error).message}.`
-        );
-      }
     }
   );
 
@@ -197,25 +207,22 @@ function activate(context: vscode.ExtensionContext) {
         return;
       }
 
-      const { fileExtension, template } =
-        getConfigurationSettings("global-error");
-      const pagefileTemplate: string = template ?? globalErrorsTemplate();
+      const type = "global-error";
+      const { fileExtension, template } = getConfigurationSettings(type);
 
-      const filePath = path.join(
-        folderUri.fsPath,
-        `global-error${fileExtension}`
-      );
-
-      try {
-        await fs.promises.writeFile(filePath, pagefileTemplate, {
-          encoding: "utf8",
+      generateFile(type, folderUri.fsPath, template, fileExtension)
+        .then((fileCreated) => {
+          if (fileCreated) {
+            vscode.window.showInformationMessage(
+              "File was created successfully!"
+            );
+          } else {
+            vscode.window.showErrorMessage(`File already exists`);
+          }
+        })
+        .catch((error) => {
+          vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
-        vscode.window.showInformationMessage(`File was created successfully!`);
-      } catch (error) {
-        vscode.window.showErrorMessage(
-          `Error creating file: ${(error as Error).message}.`
-        );
-      }
     }
   );
 

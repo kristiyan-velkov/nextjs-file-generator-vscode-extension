@@ -45,12 +45,30 @@ export async function generateFile(
   fileExtension = ".tsx",
   name: string = "",
   customType: string = ""
-): Promise<void> {
+): Promise<boolean> {
   const fileName = `${type}${fileExtension}`;
   const pathToCreateFile = path.join(filePath, fileName);
   const templateContent =
     fileTemplate || defaultTemplates[type || customType](name);
 
-  await fs.ensureDir(filePath);
-  await fs.writeFile(pathToCreateFile, templateContent, { encoding: "utf8" });
+  try {
+    await fs.ensureDir(filePath);
+    // Check if the file already exists
+    const fileExists = await fs.pathExists(pathToCreateFile);
+    if (fileExists) {
+      // File exists, return false to indicate no file was created
+      return false;
+    }
+
+    // If the file doesn't exist, write it
+    await fs.writeFile(pathToCreateFile, templateContent, { encoding: "utf8" });
+    return true; // File created successfully
+  } catch (error) {
+    // Optionally, you could throw the error to be handled by the caller
+    throw new Error(
+      `Error creating file: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
+  }
 }

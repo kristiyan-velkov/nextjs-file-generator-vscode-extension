@@ -58,15 +58,26 @@ function activate(context: vscode.ExtensionContext) {
         return;
       }
 
+      const name = await vscode.window.showInputBox({
+        placeHolder: "Enter the function name",
+      });
+
       const type = "page";
       const { fileExtension, template } = getConfigurationSettings(type);
 
-      try {
-        await generateFile(type, folderUri.fsPath, template, fileExtension, "");
-        vscode.window.showInformationMessage("File was created successfully!");
-      } catch (error) {
-        vscode.window.showErrorMessage(`File creation failed: ${error}`);
-      }
+      generateFile(type, folderUri.fsPath, template, fileExtension, name || "")
+        .then((fileCreated) => {
+          if (fileCreated) {
+            vscode.window.showInformationMessage(
+              "File was created successfully!"
+            );
+          } else {
+            vscode.window.showErrorMessage(`File already exists`);
+          }
+        })
+        .catch((error) => {
+          vscode.window.showErrorMessage(`File creation failed: ${error}`);
+        });
     }
   );
 

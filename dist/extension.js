@@ -66,15 +66,23 @@ function activate(context) {
             vscode.window.showErrorMessage("Folder not selected");
             return;
         }
+        const name = await vscode.window.showInputBox({
+            placeHolder: "Enter the function name",
+        });
         const type = "page";
         const { fileExtension, template } = getConfigurationSettings(type);
-        try {
-            await (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension, "");
-            vscode.window.showInformationMessage("File was created successfully!");
-        }
-        catch (error) {
+        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
+            .then((fileCreated) => {
+            if (fileCreated) {
+                vscode.window.showInformationMessage("File was created successfully!");
+            }
+            else {
+                vscode.window.showErrorMessage(`File already exists`);
+            }
+        })
+            .catch((error) => {
             vscode.window.showErrorMessage(`File creation failed: ${error}`);
-        }
+        });
     });
     const generateMiddleware = vscode.commands.registerCommand("nextjs.file.middleware", async (folderUri) => {
         if (!folderUri) {
@@ -2973,8 +2981,22 @@ async function generateFile(type, filePath, fileTemplate, fileExtension = ".tsx"
     const fileName = `${type}${fileExtension}`;
     const pathToCreateFile = path_1.default.join(filePath, fileName);
     const templateContent = fileTemplate || defaultTemplates[type || customType](name);
-    await fs_extra_1.default.ensureDir(filePath);
-    await fs_extra_1.default.writeFile(pathToCreateFile, templateContent, { encoding: "utf8" });
+    try {
+        await fs_extra_1.default.ensureDir(filePath);
+        // Check if the file already exists
+        const fileExists = await fs_extra_1.default.pathExists(pathToCreateFile);
+        if (fileExists) {
+            // File exists, return false to indicate no file was created
+            return false;
+        }
+        // If the file doesn't exist, write it
+        await fs_extra_1.default.writeFile(pathToCreateFile, templateContent, { encoding: "utf8" });
+        return true; // File created successfully
+    }
+    catch (error) {
+        // Optionally, you could throw the error to be handled by the caller
+        throw new Error(`Error creating file: ${error instanceof Error ? error.message : String(error)}`);
+    }
 }
 exports.generateFile = generateFile;
 

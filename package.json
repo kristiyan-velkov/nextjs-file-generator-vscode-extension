@@ -1,0 +1,415 @@
+{
+  "name": "nextjs",
+  "displayName": "Next.js File Generator",
+  "description": "This extension provides a suite of tools to streamline the development of Next.js applications directly within Visual Studio Code. From initializing new projects to generating component templates and API routes, Next.js Helper aims to boost your productivity and make building Next.js applications more efficient.",
+  "version": "0.0.1",
+  "publisher": "kristiyanvelkov",
+  "icon": "src/assets/icon.png",
+  "author": {
+    "name": "kristiyan Velkov",
+    "url": "https://www.linkedin.com/in/kristiyan-velkov-763130b3/"
+  },
+  "engines": {
+    "vscode": "^1.86.0"
+  },
+  "categories": [
+    "Snippets",
+    "Extension Packs",
+    "Programming Languages",
+    "Visualization",
+    "Formatters",
+    "Education",
+    "Keymaps",
+    "Testing",
+    "Other"
+  ],
+  "keywords": [
+    "api",
+    "auth",
+    "boilerplate",
+    "bun",
+    "bundler",
+    "cli",
+    "code generator",
+    "code",
+    "command",
+    "component",
+    "create-next-app",
+    "create-next",
+    "create-nextjs-app",
+    "create-nextjs-project",
+    "create-nextjs",
+    "create-t3-app",
+    "create-t3-project",
+    "create-t3",
+    "create",
+    "css",
+    "custom",
+    "customizable",
+    "db",
+    "deploy",
+    "dev",
+    "development",
+    "extension",
+    "file-generator",
+    "file",
+    "files",
+    "folder",
+    "framework",
+    "fullstack",
+    "generator",
+    "git",
+    "github",
+    "html",
+    "i18n",
+    "i18next",
+    "init",
+    "interface",
+    "interfaces",
+    "javascript",
+    "js",
+    "json",
+    "jsx",
+    "language",
+    "layout",
+    "loading",
+    "migrate",
+    "migration",
+    "module",
+    "modules",
+    "next 13",
+    "next 14",
+    "next",
+    "next auth",
+    "next-auth",
+    "nextauth",
+    "nextjs 13",
+    "nextjs 14",
+    "nextjs-13",
+    "nextjs-14",
+    "nextjs-file-generator",
+    "nextjs-file",
+    "nextjs-generator",
+    "nextjs",
+    "nextjs",
+    "nextjs13",
+    "nextjs14",
+    "nextjsfile",
+    "nextjsfilegenerator",
+    "nextjsgenerator",
+    "nextjsproject",
+    "node",
+    "nodejs",
+    "npm",
+    "orm",
+    "page",
+    "pages",
+    "pnpm",
+    "prisma cli",
+    "prisma db",
+    "prisma migrate",
+    "prisma studio",
+    "prisma-orm",
+    "prisma",
+    "prismacli",
+    "prismadb",
+    "prismamigrate",
+    "prismastudio",
+    "drizzle cli",
+    "drizzle db",
+    "drizzle-orm",
+    "drizzle",
+    "drizzlecli",
+    "drizzledb",
+    "drizzlemigrate",
+    "drizzlestudio",
+    "project",
+    "react 16",
+    "react 17",
+    "react",
+    "reactjs",
+    "reactjs16",
+    "reactjs17",
+    "reactjs18",
+    "reactjsfile",
+    "reactjsfilegenerator",
+    "reactjsgenerator",
+    "reactjsproject",
+    "schema.prisma",
+    "schema",
+    "schemas",
+    "schematics",
+    "seed",
+    "server",
+    "snippet",
+    "snippets",
+    "stack",
+    "start",
+    "starter kit",
+    "starter-kit",
+    "starter",
+    "starterkit",
+    "kristiyan velkov",
+    "tailwind css",
+    "tailwind-css",
+    "tailwind",
+    "tailwindcss",
+    "template",
+    "terminal",
+    "test",
+    "testing",
+    "tool",
+    "tools",
+    "trpc",
+    "ts",
+    "tsx",
+    "turbo-mode",
+    "turbo",
+    "typescript",
+    "vercel",
+    "vscode extension",
+    "vscode-extension",
+    "vscode",
+    "vscode",
+    "yarn",
+    "zod",
+    "next cli",
+    "next command line interface",
+    "next-cli",
+    "next generate files",
+    "next-generate file"
+  ],
+  "homepage": "https://github.com/kristiyan-velkov/nextjs-file-generator-vscode-extension",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kristiyan-velkov/nextjs-file-generator-vscode-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/kristiyan-velkov/nextjs-file-generator-vscode-extension/issues"
+  },
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "nextjs.files.all",
+        "title": "App router",
+        "category": "Next.js 1"
+      },
+      {
+        "command": "nextjs.files.selected",
+        "title": "Generate Selected",
+        "category": "Next.js 1"
+      },
+      {
+        "command": "nextjs.file.page",
+        "title": "Page",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.loading",
+        "title": "Loading",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.layout",
+        "title": "Layout",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.template",
+        "title": "Template",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.default",
+        "title": "Default",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.error",
+        "title": "Error",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.not-found",
+        "title": "Not-found",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.route",
+        "title": "Route",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.global-error",
+        "title": "Global-error",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.middleware",
+        "title": "Middleware",
+        "category": "Next.js"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "nextjs.explorer.submenu",
+        "label": "Next.js File"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "submenu": "nextjs.explorer.submenu",
+          "group": "2_workspace"
+        }
+      ],
+      "nextjs.explorer.submenu": [
+        {
+          "command": "nextjs.files.all",
+          "group": "1"
+        },
+        {
+          "command": "nextjs.files.selected",
+          "group": "1"
+        },
+        {
+          "command": "nextjs.file.page",
+          "group": "2"
+        },
+        {
+          "command": "nextjs.file.loading",
+          "group": "3"
+        },
+        {
+          "command": "nextjs.file.template",
+          "group": "4"
+        },
+        {
+          "command": "nextjs.file.layout",
+          "group": "4"
+        },
+        {
+          "command": "nextjs.file.default",
+          "group": "4"
+        },
+        {
+          "command": "nextjs.file.error",
+          "group": "5"
+        },
+        {
+          "command": "nextjs.file.not-found",
+          "group": "5"
+        },
+        {
+          "command": "nextjs.file.route",
+          "group": "6"
+        },
+        {
+          "command": "nextjs.file.global-error",
+          "group": "7"
+        },
+        {
+          "command": "nextjs.file.middleware",
+          "group": "7"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Next.js File Generator",
+      "properties": {
+        "nextFileGenerator.fileExtension": {
+          "type": "string",
+          "default": ".tsx",
+          "enum": [
+            ".tsx",
+            ".jsx",
+            ".js",
+            ".ts"
+          ],
+          "description": "Default file extension for generated files (.tsx,.jsx, .js or .ts)."
+        },
+        "nextFileGenerator.templates": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "string",
+              "default": "export default function ${name}() { return <div>${name} Page</div>; }",
+              "description": "Template for generating Next.js page files. Use ${name} to insert the page function name."
+            },
+            "loading": {
+              "type": "string",
+              "description": "Template for generating Next.js layout files. Use ${name} to insert the function name."
+            },
+            "layout": {
+              "type": "string",
+              "description": "Template for generating loading component files."
+            },
+            "template": {
+              "type": "string",
+              "description": "Template for generating Next.js template files. Use ${name} to insert the function name."
+            },
+            "default": {
+              "type": "string",
+              "description": "Template for generating Next.js default files."
+            },
+            "error": {
+              "type": "string",
+              "description": "Template for generating error files."
+            },
+            "not-found": {
+              "type": "string",
+              "description": "Template for generating not-found files."
+            },
+            "middleware": {
+              "type": "string",
+              "default": "import { NextRequest} from \"next/server\";\n\n// This function can be marked async if using await inside\nexport function middleware(request: NextRequest) {\n  // Middleware logic goes here\n}\n\nexport const config = {\n  matcher: \"\",\n};",
+              "description": "Template for generating layout files."
+            },
+            "global-error": {
+              "type": "string",
+              "description": "Template for generating global-error file."
+            },
+            "route": {
+              "type": "string",
+              "description": "Template for generating route file."
+            }
+          },
+          "description": "Templates for generating Next.js files. Use ${name} as a placeholder within templates."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^18.19.17",
+    "@types/vscode": "^1.86.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.56.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "next-cli-turbo": "^0.0.9",
+    "path": "^0.12.7"
+  }
+}

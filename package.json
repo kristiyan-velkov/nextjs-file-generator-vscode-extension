@@ -3,6 +3,8 @@
   "displayName": "Next.js File Generator",
   "description": "This extension provides a suite of tools to streamline the development of Next.js applications directly within Visual Studio Code. From initializing new projects to generating component templates and API routes, Next.js Helper aims to boost your productivity and make building Next.js applications more efficient.",
   "version": "0.0.1",
+  "publisher": "kristiyanvelkov",
+  "icon": "src/assets/icon.png",
   "author": {
     "name": "kristiyan Velkov",
     "url": "https://www.linkedin.com/in/kristiyan-velkov-763130b3/"

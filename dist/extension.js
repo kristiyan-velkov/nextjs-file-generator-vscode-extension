@@ -29,9 +29,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const vscode = __importStar(__webpack_require__(42));
-const path = __importStar(__webpack_require__(16));
-const generateFileExtension_1 = __webpack_require__(1);
+const vscode = __importStar(__webpack_require__(1));
+const path = __importStar(__webpack_require__(2));
+const generateFileExtension_1 = __webpack_require__(3);
 function getConfigurationSettings(fileName) {
     const config = vscode.workspace.getConfiguration("nextFileGenerator");
     const fileExtension = config.get("fileExtension", ".tsx");
@@ -316,6 +316,20 @@ exports.deactivate = deactivate;
 
 /***/ }),
 /* 1 */
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("vscode");
+
+/***/ }),
+/* 2 */
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("path");
+
+/***/ }),
+/* 3 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -325,8 +339,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.generateFile = void 0;
-const fs_extra_1 = __importDefault(__webpack_require__(2));
-const path_1 = __importDefault(__webpack_require__(16));
+const fs_extra_1 = __importDefault(__webpack_require__(4));
+const path_1 = __importDefault(__webpack_require__(2));
 const templates_1 = __webpack_require__(43);
 const defaultTemplates = {
     page: templates_1.pageTemplate,
@@ -361,7 +375,7 @@ exports.generateFile = generateFile;
 
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -369,30 +383,30 @@ exports.generateFile = generateFile;
 
 module.exports = {
   // Export promiseified graceful-fs:
-  ...__webpack_require__(3),
+  ...__webpack_require__(5),
   // Export extra methods:
-  ...__webpack_require__(14),
-  ...__webpack_require__(24),
-  ...__webpack_require__(26),
-  ...__webpack_require__(32),
-  ...__webpack_require__(17),
-  ...__webpack_require__(39),
-  ...__webpack_require__(37),
-  ...__webpack_require__(20),
-  ...__webpack_require__(25)
+  ...__webpack_require__(16),
+  ...__webpack_require__(25),
+  ...__webpack_require__(27),
+  ...__webpack_require__(33),
+  ...__webpack_require__(18),
+  ...__webpack_require__(40),
+  ...__webpack_require__(38),
+  ...__webpack_require__(21),
+  ...__webpack_require__(26)
 }
 
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 // This is adapted from https://github.com/normalize/mz
 // Copyright (c) 2014-2016 Jonathan Ong me@jongleberry.com and Contributors
-const u = (__webpack_require__(4).fromCallback)
-const fs = __webpack_require__(5)
+const u = (__webpack_require__(6).fromCallback)
+const fs = __webpack_require__(7)
 
 const api = [
   'access',
@@ -531,7 +545,7 @@ if (typeof fs.realpath.native === 'function') {
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -562,15 +576,15 @@ exports.fromPromise = function (fn) {
 
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var fs = __webpack_require__(6)
-var polyfills = __webpack_require__(7)
-var legacy = __webpack_require__(9)
-var clone = __webpack_require__(11)
+var fs = __webpack_require__(8)
+var polyfills = __webpack_require__(9)
+var legacy = __webpack_require__(11)
+var clone = __webpack_require__(13)
 
-var util = __webpack_require__(12)
+var util = __webpack_require__(14)
 
 /* istanbul ignore next - node 0.x polyfill */
 var gracefulQueue
@@ -651,7 +665,7 @@ if (!fs[gracefulQueue]) {
   if (/\bgfs4\b/i.test(process.env.NODE_DEBUG || '')) {
     process.on('exit', function() {
       debug(fs[gracefulQueue])
-      __webpack_require__(13).equal(fs[gracefulQueue].length, 0)
+      __webpack_require__(15).equal(fs[gracefulQueue].length, 0)
     })
   }
 }
@@ -1016,17 +1030,17 @@ function retry () {
 
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("fs");
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var constants = __webpack_require__(8)
+var constants = __webpack_require__(10)
 
 var origCwd = process.cwd
 var cwd = null
@@ -1384,17 +1398,17 @@ function patch (fs) {
 
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("constants");
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var Stream = (__webpack_require__(10).Stream)
+var Stream = (__webpack_require__(12).Stream)
 
 module.exports = legacy
 
@@ -1515,14 +1529,14 @@ function legacy (fs) {
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("stream");
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ ((module) => {
 
 "use strict";
@@ -1552,46 +1566,46 @@ function clone (obj) {
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("util");
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("assert");
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const u = (__webpack_require__(4).fromPromise)
+const u = (__webpack_require__(6).fromPromise)
 module.exports = {
-  copy: u(__webpack_require__(15)),
-  copySync: __webpack_require__(23)
+  copy: u(__webpack_require__(17)),
+  copySync: __webpack_require__(24)
 }
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(3)
-const path = __webpack_require__(16)
-const { mkdirs } = __webpack_require__(17)
-const { pathExists } = __webpack_require__(20)
-const { utimesMillis } = __webpack_require__(21)
-const stat = __webpack_require__(22)
+const fs = __webpack_require__(5)
+const path = __webpack_require__(2)
+const { mkdirs } = __webpack_require__(18)
+const { pathExists } = __webpack_require__(21)
+const { utimesMillis } = __webpack_require__(22)
+const stat = __webpack_require__(23)
 
 async function copy (src, dest, opts = {}) {
   if (typeof opts === 'function') {
@@ -1764,20 +1778,13 @@ module.exports = copy
 
 
 /***/ }),
-/* 16 */
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("path");
-
-/***/ }),
-/* 17 */
+/* 18 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
-const u = (__webpack_require__(4).fromPromise)
-const { makeDir: _makeDir, makeDirSync } = __webpack_require__(18)
+const u = (__webpack_require__(6).fromPromise)
+const { makeDir: _makeDir, makeDirSync } = __webpack_require__(19)
 const makeDir = u(_makeDir)
 
 module.exports = {
@@ -1792,13 +1799,13 @@ module.exports = {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
-const fs = __webpack_require__(3)
-const { checkPath } = __webpack_require__(19)
+const fs = __webpack_require__(5)
+const { checkPath } = __webpack_require__(20)
 
 const getMode = options => {
   const defaults = { mode: 0o777 }
@@ -1826,7 +1833,7 @@ module.exports.makeDirSync = (dir, options) => {
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -1836,7 +1843,7 @@ module.exports.makeDirSync = (dir, options) => {
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-const path = __webpack_require__(16)
+const path = __webpack_require__(2)
 
 // https://github.com/nodejs/node/issues/8987
 // https://github.com/libuv/libuv/pull/1088
@@ -1854,13 +1861,13 @@ module.exports.checkPath = function checkPath (pth) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
-const u = (__webpack_require__(4).fromPromise)
-const fs = __webpack_require__(3)
+const u = (__webpack_require__(6).fromPromise)
+const fs = __webpack_require__(5)
 
 function pathExists (path) {
   return fs.access(path).then(() => true).catch(() => false)
@@ -1873,14 +1880,14 @@ module.exports = {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(3)
-const u = (__webpack_require__(4).fromPromise)
+const fs = __webpack_require__(5)
+const u = (__webpack_require__(6).fromPromise)
 
 async function utimesMillis (path, atime, mtime) {
   // if (!HAS_MILLIS_RES) return fs.utimes(path, atime, mtime, callback)
@@ -1916,15 +1923,15 @@ module.exports = {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(3)
-const path = __webpack_require__(16)
-const u = (__webpack_require__(4).fromPromise)
+const fs = __webpack_require__(5)
+const path = __webpack_require__(2)
+const u = (__webpack_require__(6).fromPromise)
 
 function getStats (src, dest, opts) {
   const statFunc = opts.dereference
@@ -2081,17 +2088,17 @@ module.exports = {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(5)
-const path = __webpack_require__(16)
-const mkdirsSync = (__webpack_require__(17).mkdirsSync)
-const utimesMillisSync = (__webpack_require__(21).utimesMillisSync)
-const stat = __webpack_require__(22)
+const fs = __webpack_require__(7)
+const path = __webpack_require__(2)
+const mkdirsSync = (__webpack_require__(18).mkdirsSync)
+const utimesMillisSync = (__webpack_require__(22).utimesMillisSync)
+const stat = __webpack_require__(23)
 
 function copySync (src, dest, opts) {
   if (typeof opts === 'function') {
@@ -2249,17 +2256,17 @@ module.exports = copySync
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const u = (__webpack_require__(4).fromPromise)
-const fs = __webpack_require__(3)
-const path = __webpack_require__(16)
-const mkdir = __webpack_require__(17)
-const remove = __webpack_require__(25)
+const u = (__webpack_require__(6).fromPromise)
+const fs = __webpack_require__(5)
+const path = __webpack_require__(2)
+const mkdir = __webpack_require__(18)
+const remove = __webpack_require__(26)
 
 const emptyDir = u(async function emptyDir (dir) {
   let items
@@ -2295,14 +2302,14 @@ module.exports = {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(5)
-const u = (__webpack_require__(4).fromCallback)
+const fs = __webpack_require__(7)
+const u = (__webpack_require__(6).fromCallback)
 
 function remove (path, callback) {
   fs.rm(path, { recursive: true, force: true }, callback)
@@ -2319,15 +2326,15 @@ module.exports = {
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const { createFile, createFileSync } = __webpack_require__(27)
-const { createLink, createLinkSync } = __webpack_require__(28)
-const { createSymlink, createSymlinkSync } = __webpack_require__(29)
+const { createFile, createFileSync } = __webpack_require__(28)
+const { createLink, createLinkSync } = __webpack_require__(29)
+const { createSymlink, createSymlinkSync } = __webpack_require__(30)
 
 module.exports = {
   // file
@@ -2349,16 +2356,16 @@ module.exports = {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const u = (__webpack_require__(4).fromPromise)
-const path = __webpack_require__(16)
-const fs = __webpack_require__(3)
-const mkdir = __webpack_require__(17)
+const u = (__webpack_require__(6).fromPromise)
+const path = __webpack_require__(2)
+const fs = __webpack_require__(5)
+const mkdir = __webpack_require__(18)
 
 async function createFile (file) {
   let stats
@@ -2422,18 +2429,18 @@ module.exports = {
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const u = (__webpack_require__(4).fromPromise)
-const path = __webpack_require__(16)
-const fs = __webpack_require__(3)
-const mkdir = __webpack_require__(17)
-const { pathExists } = __webpack_require__(20)
-const { areIdentical } = __webpack_require__(22)
+const u = (__webpack_require__(6).fromPromise)
+const path = __webpack_require__(2)
+const fs = __webpack_require__(5)
+const mkdir = __webpack_require__(18)
+const { pathExists } = __webpack_require__(21)
+const { areIdentical } = __webpack_require__(23)
 
 async function createLink (srcpath, dstpath) {
   let dstStat
@@ -2493,24 +2500,24 @@ module.exports = {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const u = (__webpack_require__(4).fromPromise)
-const path = __webpack_require__(16)
-const fs = __webpack_require__(3)
+const u = (__webpack_require__(6).fromPromise)
+const path = __webpack_require__(2)
+const fs = __webpack_require__(5)
 
-const { mkdirs, mkdirsSync } = __webpack_require__(17)
+const { mkdirs, mkdirsSync } = __webpack_require__(18)
 
-const { symlinkPaths, symlinkPathsSync } = __webpack_require__(30)
-const { symlinkType, symlinkTypeSync } = __webpack_require__(31)
+const { symlinkPaths, symlinkPathsSync } = __webpack_require__(31)
+const { symlinkType, symlinkTypeSync } = __webpack_require__(32)
 
-const { pathExists } = __webpack_require__(20)
+const { pathExists } = __webpack_require__(21)
 
-const { areIdentical } = __webpack_require__(22)
+const { areIdentical } = __webpack_require__(23)
 
 async function createSymlink (srcpath, dstpath, type) {
   let stats
@@ -2567,17 +2574,17 @@ module.exports = {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const path = __webpack_require__(16)
-const fs = __webpack_require__(3)
-const { pathExists } = __webpack_require__(20)
+const path = __webpack_require__(2)
+const fs = __webpack_require__(5)
+const { pathExists } = __webpack_require__(21)
 
-const u = (__webpack_require__(4).fromPromise)
+const u = (__webpack_require__(6).fromPromise)
 
 /**
  * Function that returns two types of paths, one relative to symlink, and one
@@ -2675,14 +2682,14 @@ module.exports = {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(3)
-const u = (__webpack_require__(4).fromPromise)
+const fs = __webpack_require__(5)
+const u = (__webpack_require__(6).fromPromise)
 
 async function symlinkType (srcpath, type) {
   if (type) return type
@@ -2716,17 +2723,17 @@ module.exports = {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const u = (__webpack_require__(4).fromPromise)
-const jsonFile = __webpack_require__(33)
+const u = (__webpack_require__(6).fromPromise)
+const jsonFile = __webpack_require__(34)
 
-jsonFile.outputJson = u(__webpack_require__(36))
-jsonFile.outputJsonSync = __webpack_require__(38)
+jsonFile.outputJson = u(__webpack_require__(37))
+jsonFile.outputJsonSync = __webpack_require__(39)
 // aliases
 jsonFile.outputJSON = jsonFile.outputJson
 jsonFile.outputJSONSync = jsonFile.outputJsonSync
@@ -2739,13 +2746,13 @@ module.exports = jsonFile
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const jsonFile = __webpack_require__(34)
+const jsonFile = __webpack_require__(35)
 
 module.exports = {
   // jsonfile exports
@@ -2757,17 +2764,17 @@ module.exports = {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 let _fs
 try {
-  _fs = __webpack_require__(5)
+  _fs = __webpack_require__(7)
 } catch (_) {
-  _fs = __webpack_require__(6)
+  _fs = __webpack_require__(8)
 }
-const universalify = __webpack_require__(4)
-const { stringify, stripBom } = __webpack_require__(35)
+const universalify = __webpack_require__(6)
+const { stringify, stripBom } = __webpack_require__(36)
 
 async function _readFile (file, options = {}) {
   if (typeof options === 'string') {
@@ -2851,7 +2858,7 @@ module.exports = jsonfile
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ ((module) => {
 
 function stringify (obj, { EOL = '\n', finalEOL = true, replacer = null, spaces } = {}) {
@@ -2871,14 +2878,14 @@ module.exports = { stringify, stripBom }
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const { stringify } = __webpack_require__(35)
-const { outputFile } = __webpack_require__(37)
+const { stringify } = __webpack_require__(36)
+const { outputFile } = __webpack_require__(38)
 
 async function outputJson (file, data, options = {}) {
   const str = stringify(data, options)
@@ -2890,17 +2897,17 @@ module.exports = outputJson
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const u = (__webpack_require__(4).fromPromise)
-const fs = __webpack_require__(3)
-const path = __webpack_require__(16)
-const mkdir = __webpack_require__(17)
-const pathExists = (__webpack_require__(20).pathExists)
+const u = (__webpack_require__(6).fromPromise)
+const fs = __webpack_require__(5)
+const path = __webpack_require__(2)
+const mkdir = __webpack_require__(18)
+const pathExists = (__webpack_require__(21).pathExists)
 
 async function outputFile (file, data, encoding = 'utf-8') {
   const dir = path.dirname(file)
@@ -2928,14 +2935,14 @@ module.exports = {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const { stringify } = __webpack_require__(35)
-const { outputFileSync } = __webpack_require__(37)
+const { stringify } = __webpack_require__(36)
+const { outputFileSync } = __webpack_require__(38)
 
 function outputJsonSync (file, data, options) {
   const str = stringify(data, options)
@@ -2947,33 +2954,33 @@ module.exports = outputJsonSync
 
 
 /***/ }),
-/* 39 */
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-const u = (__webpack_require__(4).fromPromise)
-module.exports = {
-  move: u(__webpack_require__(40)),
-  moveSync: __webpack_require__(41)
-}
-
-
-/***/ }),
 /* 40 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(3)
-const path = __webpack_require__(16)
-const { copy } = __webpack_require__(14)
-const { remove } = __webpack_require__(25)
-const { mkdirp } = __webpack_require__(17)
-const { pathExists } = __webpack_require__(20)
-const stat = __webpack_require__(22)
+const u = (__webpack_require__(6).fromPromise)
+module.exports = {
+  move: u(__webpack_require__(41)),
+  moveSync: __webpack_require__(42)
+}
+
+
+/***/ }),
+/* 41 */
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+const fs = __webpack_require__(5)
+const path = __webpack_require__(2)
+const { copy } = __webpack_require__(16)
+const { remove } = __webpack_require__(26)
+const { mkdirp } = __webpack_require__(18)
+const { pathExists } = __webpack_require__(21)
+const stat = __webpack_require__(23)
 
 async function move (src, dest, opts = {}) {
   const overwrite = opts.overwrite || opts.clobber || false
@@ -3027,18 +3034,18 @@ module.exports = move
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(5)
-const path = __webpack_require__(16)
-const copySync = (__webpack_require__(14).copySync)
-const removeSync = (__webpack_require__(25).removeSync)
-const mkdirpSync = (__webpack_require__(17).mkdirpSync)
-const stat = __webpack_require__(22)
+const fs = __webpack_require__(7)
+const path = __webpack_require__(2)
+const copySync = (__webpack_require__(16).copySync)
+const removeSync = (__webpack_require__(26).removeSync)
+const mkdirpSync = (__webpack_require__(18).mkdirpSync)
+const stat = __webpack_require__(23)
 
 function moveSync (src, dest, opts) {
   opts = opts || {}
@@ -3087,13 +3094,6 @@ function moveAcrossDevice (src, dest, overwrite) {
 
 module.exports = moveSync
 
-
-/***/ }),
-/* 42 */
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("vscode");
 
 /***/ }),
 /* 43 */

@@ -1,43 +1,92 @@
-# Next.js Helper Extension for VS Code
+<div align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./next-js-cli.png" />
+      <img src="./docs/images/next-js-file-generator.png" height="auto" />
+    </picture>
 
-This extension provides a suite of tools to streamline the development of Next.js applications directly within Visual Studio Code. From initializing new projects to generating component templates and API routes, Next.js Helper aims to boost your productivity and make building Next.js applications more efficient.
+[![Follow me](https://img.shields.io/badge/sponsors-99+-orange.svg)](https://github.com/kristiyan-velkov) [![Sponsors](https://img.shields.io/badge/Follow-120-blue?logo=github&style=social.svg)](https://github.com/kristiyan-velkov) [![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/kristiyan-velkov)
+
+<h1>Next.js File Generator</h1>
+</div>
+
+Powerful file genetator extension designed to accelerate the development of Next.js applications by automating the creation of common file types, such as **pages, layouts**, **templates, errors, not-found, route, global-errors, middlewares and more**.
+
+Built with ease of use in mind, it streamlines the setup of new routes and components, allowing developers to focus on building their applications faster.
+
+---
+
+💻 **If you prefer terminal aproach for generating files?**
+
+- [next-cli-turbo](https://www.npmjs.com/package/next-cli-turbo) - A Next.js CLI tool for generating files right from your terminal.
+
+---
+
+## Usage
+
+![demo](https://raw.githubusercontent.com/kristiyan-velkov/nextjs-file-generator-vscode-extension/main/docs/images/demo.gif)
+
+#### Customizing Templates
+
+The extension allows for the customization of file templates through VS Code's settings.
+
+1. Navigate to Settings > Extensions > Next.js File Generator
+2. Find Templates and click edit in settings.json
+3. Modifying the settings.json under the nextFileGenerator.templates object.
+
+This feature supports customization for all possible file types you can generate, allowing you to align the templates with your project's coding standards and structure seamlessly.
+
+**Example configuration:**
+
+- Use ${name} within a template to insert the specified name dynamically.
+
+```
+"nextFileGenerator.templates": {
+    "page": "export default function ${name}Page() { return <div>My Page</div>; }"
+  },
+
+```
 
 ## Features
 
-- **Initialize Next.js Projects**: Quickly scaffold new Next.js applications.
-- **Generate Components and API Routes**: Easily generate pages, components, layouts, and API routes with customizable templates.
-- **Support for Custom Commands**: Extend the functionality with custom script generation commands.
+- **Quick File Generation**: Generate Next.js files like pages, layouts, middleware, and more, with just a couple of clicks.
+- **Customizable Templates**: Use the extension's settings to customize file templates to match your coding style or project structure.
+- **Multiple File Types**: Supports generating .tsx, .jsx, .js, and .ts files, configurable through extension settings.
 
-## Installation
+---
 
-To install the Next.js Helper extension, follow these steps:
+## Developer Support:
 
-1. Open Visual Studio Code.
-2. Go to the Extensions view by clicking on the square icon on the sidebar or pressing `Ctrl+Shift+X`.
-3. Search for "Next.js Helper".
-4. Click on the Install button.
+- If you saw some issue/bug 🐛 related to the specific release version.
+- If you want some new feature or change to be added/implemented. 😊
 
-Alternatively, you can install the extension via the command line:
+Please, contact the creator of the **Next.js File Generator**, so he will be able to fix or improve it:
 
-```bash
-code --install-extension <extension-id>
-```
+**Kristiyan Velkov**
 
-Usage
-After installing the extension, you can access its features via the Command Palette:
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kristiyan-velkov-763130b3/) [![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://github.com/kristiyan-velkov)
 
-Open the Command Palette with Ctrl+Shift+P or Cmd+Shift+P on macOS.
-Type Next.js Helper to see the list of available commands.
-Select the command you wish to execute and follow the prompts.
-Available Commands
-Initialize Next.js Project: Scaffold a new Next.js application.
-Generate Component: Generate a new component with options for pages, layouts, and templates.
-Additional commands for generating API routes, error pages, and more.
-Contributing
-Contributions to the Next.js Helper extension are welcome. If you'd like to contribute, please fork the repository and submit a pull request with your changes. For major changes, please open an issue first to discuss what you would like to change.
+**Take a look my blog in Medium**: [Kristiyan Velkov](https://medium.com/@kristiyan.velkov)
 
-Support
-If you encounter any issues or have suggestions for improvements, please open an issue in the GitHub repository.
+---
 
-License
+## Support my work
+
+If you like my work and want to support me to work hard, please donate via:
+
+| <a href="https://revolut.me/kristiyanvelkov" title="Link to Revolut">Revolut</a>                                                                                                                                                                                      | <a href="https://www.buymeacoffee.com/kristiyanVelkov" title="Link to Buy me a coffee">Buy me a coffee</a>                                                                                                                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <a href="https://revolut.me/kristiyanvelkov" target="_blank"><img src="https://raw.githubusercontent.com/kristiyan-velkov/nextjs-file-generator-vscode-extension/main/docs/images/kristiyan.velkov-revolut.png" width="200px"  alt="Krisityan Velkov - Revolut"/></a> | <a href="https://www.buymeacoffee.com/kristiyanVelkov" style="background:red,height='500px'"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=kristiyanVelkov&button_colour=000000&font_colour=ffffff&font_family=Lato&outline_colour=ffffff&coffee_colour=FFDD00" width="200px"/></a> |
+
+Thanks a bunch for supporting me! It means a LOT 😍
+
+---
+
+## Contributing
+
+**Contributions are welcome!** ❤️
+
+If you have suggestions for improving `Next.js File Generator `, please open an issue and submit a pull request.
+
+## License
+
 MIT

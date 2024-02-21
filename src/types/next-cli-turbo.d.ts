@@ -1,14 +1,3 @@
-declare module "next-cli-turbo/generateFileExtension" {
-  export default function generateFile(
-    type: string,
-    filePath: string,
-    fileTemplate: string,
-    fileExtension?: string,
-    name?: string,
-    customType?: string
-  ): Promise<boolean>;
-}
-
 type TemplateFunction = (name: string) => string;
 
 declare module "next-cli-turbo/templates" {

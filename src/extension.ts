@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import generateFile from "next-cli-turbo/generateFileExtension";
+import { generateFile } from "./utils/generateFileExtension";
 
 interface TemplateConfig {
   [key: string]: string | undefined;
@@ -109,31 +109,19 @@ function activate(context: vscode.ExtensionContext) {
       const type = "page";
       const { fileExtension, template } = getConfigurationSettings(type);
 
-      try {
-        await generateFile(
-          type,
-          folderUri.fsPath,
-          template,
-          fileExtension,
-          name ?? ""
-        );
-      } catch (err) {
-        console.log(err);
-      }
-
-      // generateFile(type, folderUri.fsPath, template, fileExtension, name ?? "")
-      //   .then((fileCreated) => {
-      //     if (fileCreated) {
-      //       vscode.window.showInformationMessage(
-      //         "File was created successfully!"
-      //       );
-      //     } else {
-      //       vscode.window.showErrorMessage(`File already exists`);
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     vscode.window.showErrorMessage(`File creation failed: ${error}`);
-      //   });
+      generateFile(type, folderUri.fsPath, template, fileExtension, name ?? "")
+        .then((fileCreated) => {
+          if (fileCreated) {
+            vscode.window.showInformationMessage(
+              "File was created successfully!"
+            );
+          } else {
+            vscode.window.showErrorMessage(`File already exists`);
+          }
+        })
+        .catch((error) => {
+          vscode.window.showErrorMessage(`File creation failed: ${error}`);
+        });
     }
   );
 

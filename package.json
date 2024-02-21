@@ -7,8 +7,180 @@
     "vscode": "^1.86.0"
   },
   "categories": [
+    "Snippets",
+    "Extension Packs",
+    "Programming Languages",
+    "Visualization",
+    "Formatters",
+    "Education",
+    "Keymaps",
+    "Testing",
     "Other"
   ],
+  "keywords": [
+    "api",
+    "auth",
+    "boilerplate",
+    "bun",
+    "bundler",
+    "cli",
+    "code generator",
+    "code",
+    "command",
+    "component",
+    "create-next-app",
+    "create-next",
+    "create-nextjs-app",
+    "create-nextjs-project",
+    "create-nextjs",
+    "create-t3-app",
+    "create-t3-project",
+    "create-t3",
+    "create",
+    "css",
+    "custom",
+    "customizable",
+    "db",
+    "deploy",
+    "dev",
+    "development",
+    "extension",
+    "file-generator",
+    "file",
+    "files",
+    "folder",
+    "framework",
+    "fullstack",
+    "generator",
+    "git",
+    "github",
+    "html",
+    "i18n",
+    "i18next",
+    "init",
+    "interface",
+    "interfaces",
+    "javascript",
+    "js",
+    "json",
+    "jsx",
+    "language",
+    "layout",
+    "loading",
+    "migrate",
+    "migration",
+    "module",
+    "modules",
+    "next 13",
+    "next 14",
+    "next",
+    "next auth",
+    "next-auth",
+    "nextauth",
+    "nextjs 13",
+    "nextjs 14",
+    "nextjs-13",
+    "nextjs-14",
+    "nextjs-file-generator",
+    "nextjs-file",
+    "nextjs-generator",
+    "nextjs",
+    "nextjs",
+    "nextjs13",
+    "nextjs14",
+    "nextjsfile",
+    "nextjsfilegenerator",
+    "nextjsgenerator",
+    "nextjsproject",
+    "node",
+    "nodejs",
+    "npm",
+    "orm",
+    "page",
+    "pages",
+    "pnpm",
+    "prisma cli",
+    "prisma db",
+    "prisma migrate",
+    "prisma studio",
+    "prisma-orm",
+    "prisma",
+    "prismacli",
+    "prismadb",
+    "prismamigrate",
+    "prismastudio",
+    "drizzle cli",
+    "drizzle db",
+    "drizzle-orm",
+    "drizzle",
+    "drizzlecli",
+    "drizzledb",
+    "drizzlemigrate",
+    "drizzlestudio",
+    "project",
+    "react 16",
+    "react 17",
+    "react",
+    "reactjs",
+    "reactjs16",
+    "reactjs17",
+    "reactjs18",
+    "reactjsfile",
+    "reactjsfilegenerator",
+    "reactjsgenerator",
+    "reactjsproject",
+    "schema.prisma",
+    "schema",
+    "schemas",
+    "schematics",
+    "seed",
+    "server",
+    "snippet",
+    "snippets",
+    "stack",
+    "start",
+    "starter kit",
+    "starter-kit",
+    "starter",
+    "starterkit",
+    "kristiyan velkov",
+    "tailwind css",
+    "tailwind-css",
+    "tailwind",
+    "tailwindcss",
+    "template",
+    "terminal",
+    "test",
+    "testing",
+    "tool",
+    "tools",
+    "trpc",
+    "ts",
+    "tsx",
+    "turbo-mode",
+    "turbo",
+    "typescript",
+    "vercel",
+    "vscode extension",
+    "vscode-extension",
+    "vscode",
+    "vscode",
+    "yarn",
+    "zod",
+    "next cli",
+    "next command line interface",
+    "next-cli",
+    "next generate files",
+    "next-generate file"
+  ],
+  "homepage": "https://github.com/kristiyan-velkov/nextjs-file-generator-vscode-extension",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kristiyan-velkov/nextjs-file-generator-vscode-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/kristiyan-velkov/nextjs-file-generator-vscode-extension/issues"
+  },
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
@@ -26,6 +198,11 @@
       {
         "command": "nextjs.file.page",
         "title": "Page",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.loading",
+        "title": "Loading",
         "category": "Next.js"
       },
       {
@@ -93,40 +270,43 @@
         },
         {
           "command": "nextjs.file.page",
-          "alt": "nextjs.file.page",
           "group": "2"
         },
         {
-          "command": "nextjs.file.template",
+          "command": "nextjs.file.loading",
           "group": "3"
+        },
+        {
+          "command": "nextjs.file.template",
+          "group": "4"
         },
         {
           "command": "nextjs.file.layout",
-          "group": "3"
+          "group": "4"
         },
         {
           "command": "nextjs.file.default",
-          "group": "3"
+          "group": "4"
         },
         {
           "command": "nextjs.file.error",
-          "group": "4"
-        },
-        {
-          "command": "nextjs.file.not-found",
-          "group": "4"
-        },
-        {
-          "command": "nextjs.file.route",
           "group": "5"
         },
         {
-          "command": "nextjs.file.global-error",
+          "command": "nextjs.file.not-found",
+          "group": "5"
+        },
+        {
+          "command": "nextjs.file.route",
           "group": "6"
         },
         {
+          "command": "nextjs.file.global-error",
+          "group": "7"
+        },
+        {
           "command": "nextjs.file.middleware",
-          "group": "6"
+          "group": "7"
         }
       ]
     },
@@ -152,26 +332,38 @@
               "default": "export default function ${name}() { return <div>${name} Page</div>; }",
               "description": "Template for generating Next.js page files. Use ${name} to insert the page function name."
             },
-            "middleware": {
-              "type": "string",
-              "default": "import { NextRequest} from \"next/server\";\n\n// This function can be marked async if using await inside\nexport function middleware(request: NextRequest) {\n  // Middleware logic goes here\n}\n\nexport const config = {\n  matcher: \"\",\n};",
-              "description": "Template for generating layout files."
-            },
             "loading": {
               "type": "string",
+              "description": "Template for generating Next.js layout files. Use ${name} to insert the function name."
+            },
+            "layout": {
+              "type": "string",
               "description": "Template for generating loading component files."
+            },
+            "template": {
+              "type": "string",
+              "description": "Template for generating Next.js template files. Use ${name} to insert the function name."
+            },
+            "default": {
+              "type": "string",
+              "description": "Template for generating Next.js default files."
             },
             "error": {
               "type": "string",
               "description": "Template for generating error files."
             },
-            "global-error": {
-              "type": "string",
-              "description": "Template for generating global-error file."
-            },
             "not-found": {
               "type": "string",
               "description": "Template for generating not-found files."
+            },
+            "middleware": {
+              "type": "string",
+              "default": "import { NextRequest} from \"next/server\";\n\n// This function can be marked async if using await inside\nexport function middleware(request: NextRequest) {\n  // Middleware logic goes here\n}\n\nexport const config = {\n  matcher: \"\",\n};",
+              "description": "Template for generating layout files."
+            },
+            "global-error": {
+              "type": "string",
+              "description": "Template for generating global-error file."
             },
             "route": {
               "type": "string",

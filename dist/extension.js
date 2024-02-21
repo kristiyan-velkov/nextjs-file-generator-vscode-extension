@@ -70,6 +70,7 @@ function activate(context) {
         }
         const fileOptions = [
             { label: "page" },
+            { label: "loading" },
             { label: "layout" },
             { label: "template" },
             { label: "default" },
@@ -117,14 +118,17 @@ function activate(context) {
             vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
     });
-    const generateMiddleware = vscode.commands.registerCommand("nextjs.file.middleware", async (folderUri) => {
+    const generateLoading = vscode.commands.registerCommand("nextjs.file.loading", async (folderUri) => {
         if (!folderUri) {
             vscode.window.showErrorMessage("Folder not selected");
             return;
         }
-        const type = "middleware";
+        const name = await vscode.window.showInputBox({
+            placeHolder: "Enter the function name",
+        });
+        const type = "loading";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -223,6 +227,26 @@ function activate(context) {
             vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
     });
+    const generateMiddleware = vscode.commands.registerCommand("nextjs.file.middleware", async (folderUri) => {
+        if (!folderUri) {
+            vscode.window.showErrorMessage("Folder not selected");
+            return;
+        }
+        const type = "middleware";
+        const { fileExtension, template } = getConfigurationSettings(type);
+        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+            .then((fileCreated) => {
+            if (fileCreated) {
+                vscode.window.showInformationMessage("File was created successfully!");
+            }
+            else {
+                vscode.window.showErrorMessage(`File already exists`);
+            }
+        })
+            .catch((error) => {
+            vscode.window.showErrorMessage(`File creation failed: ${error}`);
+        });
+    });
     const generateGlobalError = vscode.commands.registerCommand("nextjs.file.global-error", async (folderUri) => {
         if (!folderUri) {
             vscode.window.showErrorMessage("Folder not selected");
@@ -283,7 +307,7 @@ function activate(context) {
             vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
     });
-    context.subscriptions.push(generateAll, generateSelected, generatePage, generateLayout, generateTemplate, generateDefaultFile, generateError, generateMiddleware, generateNotFound, generateGlobalError, generateRoute);
+    context.subscriptions.push(generateAll, generateSelected, generatePage, generateLoading, generateLayout, generateTemplate, generateDefaultFile, generateError, generateMiddleware, generateNotFound, generateGlobalError, generateRoute);
 }
 function deactivate() { }
 exports.activate = activate;

@@ -57,6 +57,7 @@ function activate(context: vscode.ExtensionContext) {
 
       const fileOptions = [
         { label: "page" },
+        {label: "loading"},
         { label: "layout" },
         { label: "template" },
         { label: "default" },
@@ -124,18 +125,22 @@ function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  const generateMiddleware = vscode.commands.registerCommand(
-    "nextjs.file.middleware",
+const generateLoading = vscode.commands.registerCommand(
+    "nextjs.file.loading",
     async (folderUri: vscode.Uri) => {
       if (!folderUri) {
         vscode.window.showErrorMessage("Folder not selected");
         return;
       }
 
-      const type = "middleware";
+      const name = await vscode.window.showInputBox({
+        placeHolder: "Enter the function name",
+      });
+
+      const type = "loading";
       const { fileExtension, template } = getConfigurationSettings(type);
 
-      generateFile(type, folderUri.fsPath, template, fileExtension)
+      generateFile(type, folderUri.fsPath, template, fileExtension, name || "")
         .then((fileCreated) => {
           if (fileCreated) {
             vscode.window.showInformationMessage(
@@ -267,6 +272,33 @@ function activate(context: vscode.ExtensionContext) {
     }
   );
 
+    const generateMiddleware = vscode.commands.registerCommand(
+    "nextjs.file.middleware",
+    async (folderUri: vscode.Uri) => {
+      if (!folderUri) {
+        vscode.window.showErrorMessage("Folder not selected");
+        return;
+      }
+
+      const type = "middleware";
+      const { fileExtension, template } = getConfigurationSettings(type);
+
+      generateFile(type, folderUri.fsPath, template, fileExtension)
+        .then((fileCreated) => {
+          if (fileCreated) {
+            vscode.window.showInformationMessage(
+              "File was created successfully!"
+            );
+          } else {
+            vscode.window.showErrorMessage(`File already exists`);
+          }
+        })
+        .catch((error) => {
+          vscode.window.showErrorMessage(`File creation failed: ${error}`);
+        });
+    }
+  );
+
   const generateGlobalError = vscode.commands.registerCommand(
     "nextjs.file.global-error",
     async (folderUri: vscode.Uri) => {
@@ -352,6 +384,7 @@ function activate(context: vscode.ExtensionContext) {
     generateAll,
     generateSelected,
     generatePage,
+    generateLoading,
     generateLayout,
     generateTemplate,
     generateDefaultFile,

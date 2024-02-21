@@ -19,33 +19,53 @@
         "category": "Next.js 1"
       },
       {
+        "command": "nextjs.files.selected",
+        "title": "Generate Selected",
+        "category": "Next.js 1"
+      },
+      {
         "command": "nextjs.file.page",
-        "title": "page",
+        "title": "Page",
         "category": "Next.js"
       },
       {
         "command": "nextjs.file.layout",
-        "title": "layout",
+        "title": "Layout",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.template",
+        "title": "Template",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.default",
+        "title": "Default",
         "category": "Next.js"
       },
       {
         "command": "nextjs.file.error",
-        "title": "error",
-        "category": "Next.js"
-      },
-      {
-        "command": "nextjs.file.global-error",
-        "title": "global-error",
+        "title": "Error",
         "category": "Next.js"
       },
       {
         "command": "nextjs.file.not-found",
-        "title": "not-found",
+        "title": "Not-found",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.route",
+        "title": "Route",
+        "category": "Next.js"
+      },
+      {
+        "command": "nextjs.file.global-error",
+        "title": "Global-error",
         "category": "Next.js"
       },
       {
         "command": "nextjs.file.middleware",
-        "title": "middleware",
+        "title": "Middleware",
         "category": "Next.js"
       }
     ],
@@ -59,45 +79,54 @@
       "explorer/context": [
         {
           "submenu": "nextjs.explorer.submenu",
-          "group": "2_workspace",
-          "when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot"
+          "group": "2_workspace"
         }
       ],
       "nextjs.explorer.submenu": [
         {
           "command": "nextjs.files.all",
-          "alt": "App route",
-          "group": "1_file"
+          "group": "1"
+        },
+        {
+          "command": "nextjs.files.selected",
+          "group": "1"
         },
         {
           "command": "nextjs.file.page",
-          "alt": "Generate page file",
-          "group": "2_file"
+          "alt": "nextjs.file.page",
+          "group": "2"
         },
         {
-          "command": "nextjs.file.error",
-          "alt": "Generate error file",
-          "group": "2_file"
-        },
-        {
-          "command": "nextjs.file.not-found",
-          "alt": "Generate no-found file",
-          "group": "2_file"
+          "command": "nextjs.file.template",
+          "group": "3"
         },
         {
           "command": "nextjs.file.layout",
-          "alt": "Generate layout file",
-          "group": "3_file"
+          "group": "3"
+        },
+        {
+          "command": "nextjs.file.default",
+          "group": "3"
+        },
+        {
+          "command": "nextjs.file.error",
+          "group": "4"
+        },
+        {
+          "command": "nextjs.file.not-found",
+          "group": "4"
+        },
+        {
+          "command": "nextjs.file.route",
+          "group": "5"
         },
         {
           "command": "nextjs.file.global-error",
-          "alt": "Generate global-error file",
-          "group": "4_file"
+          "group": "6"
         },
         {
           "command": "nextjs.file.middleware",
-          "alt": "Generate middleware file",
-          "group": "4_file"
+          "group": "6"
         }
       ]
     },

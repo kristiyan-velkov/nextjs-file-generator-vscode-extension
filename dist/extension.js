@@ -54,24 +54,45 @@ function activate(context) {
         else {
             targetPath = folderUri.fsPath;
         }
-        // const { fileExtension, template } = getConfigurationSettings("page");
-        // generateFile("page", folderUri.fsPath, template, fileExtension)
-        //   .then((fileCreated) => {
-        //     if (fileCreated) {
-        //       vscode.window.showInformationMessage(
-        //         "File was created successfully!"
-        //       );
-        //     } else {
-        //       vscode.window.showErrorMessage(`File already exists`);
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     vscode.window.showErrorMessage(`File creation failed: ${error}`);
-        //   });
-        (0, generateFile_1.generateFile)("page", targetPath, "");
-        (0, generateFile_1.generateFile)("loading", targetPath, "");
-        (0, generateFile_1.generateFile)("error", targetPath, "");
-        (0, generateFile_1.generateFile)("not-found", targetPath, "");
+        const { fileExtension, template: pageTemplate } = getConfigurationSettings("page");
+        const loading = getConfigurationSettings("loading");
+        const error = getConfigurationSettings("error");
+        const notFound = getConfigurationSettings("not-found");
+        (0, generateFile_1.generateFile)("page", targetPath, pageTemplate, fileExtension);
+        (0, generateFile_1.generateFile)("loading", targetPath, loading.template, fileExtension);
+        (0, generateFile_1.generateFile)("error", targetPath, error.template, fileExtension);
+        (0, generateFile_1.generateFile)("not-found", targetPath, notFound.template, fileExtension);
+    });
+    const generateSelected = vscode.commands.registerCommand("nextjs.files.selected", async (folderUri) => {
+        if (!folderUri) {
+            vscode.window.showErrorMessage("Folder not selected");
+            return;
+        }
+        const fileOptions = [
+            { label: "page" },
+            { label: "layout" },
+            { label: "template" },
+            { label: "default" },
+            { label: "error" },
+            { label: "not-found" },
+            { label: "global-error" },
+            { label: "middleware" },
+            { label: "route" },
+        ];
+        const selectedFiles = await vscode.window.showQuickPick(fileOptions, {
+            canPickMany: true,
+            placeHolder: "Select file types to generate",
+        });
+        if (!selectedFiles) {
+            vscode.window.showInformationMessage("No selection made");
+            return;
+        }
+        selectedFiles.forEach((file) => {
+            const { fileExtension, template } = getConfigurationSettings(file.label);
+            (0, generateFile_1.generateFile)(file.label, folderUri.fsPath, template, fileExtension).catch((error) => {
+                vscode.window.showErrorMessage(`Files creation failed: ${error}`);
+            });
+        });
     });
     const generatePage = vscode.commands.registerCommand("nextjs.file.page", async (folderUri) => {
         if (!folderUri) {
@@ -139,6 +160,29 @@ function activate(context) {
             vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
     });
+    const generateTemplate = vscode.commands.registerCommand("nextjs.file.template", async (folderUri) => {
+        if (!folderUri) {
+            vscode.window.showErrorMessage("Folder not selected");
+            return;
+        }
+        const name = await vscode.window.showInputBox({
+            placeHolder: "Enter the function name",
+        });
+        const type = "template";
+        const { fileExtension, template } = getConfigurationSettings(type);
+        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
+            .then((fileCreated) => {
+            if (fileCreated) {
+                vscode.window.showInformationMessage("File was created successfully!");
+            }
+            else {
+                vscode.window.showErrorMessage(`File already exists`);
+            }
+        })
+            .catch((error) => {
+            vscode.window.showErrorMessage(`File creation failed: ${error}`);
+        });
+    });
     const generateError = vscode.commands.registerCommand("nextjs.file.error", async (folderUri) => {
         if (!folderUri) {
             vscode.window.showErrorMessage("Folder not selected");
@@ -179,7 +223,7 @@ function activate(context) {
             vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
     });
-    const globalError = vscode.commands.registerCommand("nextjs.file.global-error", async (folderUri) => {
+    const generateGlobalError = vscode.commands.registerCommand("nextjs.file.global-error", async (folderUri) => {
         if (!folderUri) {
             vscode.window.showErrorMessage("Folder not selected");
             return;
@@ -199,36 +243,47 @@ function activate(context) {
             vscode.window.showErrorMessage(`File creation failed: ${error}`);
         });
     });
-    let disposable = vscode.commands.registerCommand("extension.nextjsGenerator", async (folderUri) => {
-        const componentName = await vscode.window.showInputBox({
-            placeHolder: "Enter the file name",
-        });
-        // if (!componentName) {
-        //   vscode.window.showErrorMessage("Component name cannot be empty");
-        //   return;
-        // }
+    const generateRoute = vscode.commands.registerCommand("nextjs.file.route", async (folderUri) => {
         if (!folderUri) {
             vscode.window.showErrorMessage("Folder not selected");
             return;
         }
-        const componentPath = path.join(folderUri.fsPath, `${componentName}.tsx`);
-        // Read the template from the extension settings
-        const config = vscode.workspace.getConfiguration();
-        let template = config.get("nextComponentGenerator.template");
-        // template = template.replace(/\$\{componentName\}/g, componentName);
-        // fs.writeFile(componentPath, template, "utf8", (err) => {
-        //   if (err) {
-        //     vscode.window.showErrorMessage(
-        //       `Failed to create component: ${err.message}`
-        //     );
-        //   } else {
-        //     vscode.window.showInformationMessage(
-        //       `Component ${componentName} created successfully`
-        //     );
-        //   }
-        // });
+        const type = "route";
+        const { fileExtension, template } = getConfigurationSettings(type);
+        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+            .then((fileCreated) => {
+            if (fileCreated) {
+                vscode.window.showInformationMessage("File was created successfully!");
+            }
+            else {
+                vscode.window.showErrorMessage(`File already exists`);
+            }
+        })
+            .catch((error) => {
+            vscode.window.showErrorMessage(`File creation failed: ${error}`);
+        });
     });
-    context.subscriptions.push(disposable, generateAll, generatePage, generateLayout, generateError, generateMiddleware, generateNotFound, globalError);
+    const generateDefaultFile = vscode.commands.registerCommand("nextjs.file.default", async (folderUri) => {
+        if (!folderUri) {
+            vscode.window.showErrorMessage("Folder not selected");
+            return;
+        }
+        const type = "default";
+        const { fileExtension, template } = getConfigurationSettings(type);
+        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+            .then((fileCreated) => {
+            if (fileCreated) {
+                vscode.window.showInformationMessage("File was created successfully!");
+            }
+            else {
+                vscode.window.showErrorMessage(`File already exists`);
+            }
+        })
+            .catch((error) => {
+            vscode.window.showErrorMessage(`File creation failed: ${error}`);
+        });
+    });
+    context.subscriptions.push(generateAll, generateSelected, generatePage, generateLayout, generateTemplate, generateDefaultFile, generateError, generateMiddleware, generateNotFound, generateGlobalError, generateRoute);
 }
 function deactivate() { }
 exports.activate = activate;
@@ -2995,12 +3050,8 @@ const defaultTemplates = {
     "global-error": templates_1.globalErrorsTemplate,
     "not-found": templates_1.notFoundTemplate,
     middleware: templates_1.middlewareTemplate,
-    routeGet: templates_1.routeGetTemplate,
-    routePost: templates_1.routePostTemplate,
-    routeDelete: templates_1.routeDeleteTemplate,
-    routePatch: templates_1.routePatchTemplate,
-    routePut: templates_1.routePutTemplate,
-    routeHead: templates_1.routeHeadTemplate,
+    route: templates_1.routeTemplate,
+    default: templates_1.defaultFileTemplate,
 };
 async function generateFile(type, filePath, fileTemplate, fileExtension = ".tsx", name = "", customType = "") {
     const fileName = `${type}${fileExtension}`;
@@ -3008,18 +3059,14 @@ async function generateFile(type, filePath, fileTemplate, fileExtension = ".tsx"
     const templateContent = fileTemplate || defaultTemplates[type || customType](name);
     try {
         await fs_extra_1.default.ensureDir(filePath);
-        // Check if the file already exists
         const fileExists = await fs_extra_1.default.pathExists(pathToCreateFile);
         if (fileExists) {
-            // File exists, return false to indicate no file was created
             return false;
         }
-        // If the file doesn't exist, write it
         await fs_extra_1.default.writeFile(pathToCreateFile, templateContent, { encoding: "utf8" });
-        return true; // File created successfully
+        return true;
     }
     catch (error) {
-        // Optionally, you could throw the error to be handled by the caller
         throw new Error(`Error creating file: ${error instanceof Error ? error.message : String(error)}`);
     }
 }
@@ -3033,7 +3080,7 @@ exports.generateFile = generateFile;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.routeHeadTemplate = exports.routePutTemplate = exports.routePatchTemplate = exports.routeDeleteTemplate = exports.routePostTemplate = exports.routeGetTemplate = exports.middlewareTemplate = exports.templateFile = exports.notFoundTemplate = exports.globalErrorsTemplate = exports.errorTemplate = exports.loadingTemplate = exports.layoutTemplate = exports.pageTemplate = void 0;
+exports.defaultFileTemplate = exports.routeTemplate = exports.middlewareTemplate = exports.templateFile = exports.notFoundTemplate = exports.globalErrorsTemplate = exports.errorTemplate = exports.loadingTemplate = exports.layoutTemplate = exports.pageTemplate = void 0;
 function validateName(name) {
     if (/[^a-zA-Z\s'-]/.test(name)) {
         return "";
@@ -3161,49 +3208,25 @@ export const config = {
 };`;
 };
 exports.middlewareTemplate = middlewareTemplate;
-// Api Routes
-const routeGetTemplate = () => {
-    return `export async function GET(request: Request) {
+const routeTemplate = () => {
+    return `export async function GET(request: Request) {}
 
-}
+export async function HEAD(request: Request) {}
+
+export async function POST(request: Request) {}
+
+export async function PUT(request: Request) {}
+
+export async function DELETE(request: Request) {}
+
+export async function PATCH(request: Request) {}
 `;
 };
-exports.routeGetTemplate = routeGetTemplate;
-const routePostTemplate = () => {
-    return `export async function POST(request: Request) {
-
-}
-`;
+exports.routeTemplate = routeTemplate;
+const defaultFileTemplate = () => {
+    return `export default function Default() {}`;
 };
-exports.routePostTemplate = routePostTemplate;
-const routeDeleteTemplate = () => {
-    return `export async function DELETE(request: Request) {
-
-}
-`;
-};
-exports.routeDeleteTemplate = routeDeleteTemplate;
-const routePatchTemplate = () => {
-    return `export async function PATCH(request: Request) {
-
-}
-`;
-};
-exports.routePatchTemplate = routePatchTemplate;
-const routePutTemplate = () => {
-    return `export async function PUT(request: Request) {
-
-}
-`;
-};
-exports.routePutTemplate = routePutTemplate;
-const routeHeadTemplate = () => {
-    return `export async function HEAD(request: Request) {
-
-}
-`;
-};
-exports.routeHeadTemplate = routeHeadTemplate;
+exports.defaultFileTemplate = defaultFileTemplate;
 
 
 /***/ })

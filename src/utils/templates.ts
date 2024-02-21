@@ -129,45 +129,21 @@ export const config = {
 };`;
 };
 
-// Api Routes
-export const routeGetTemplate = (): string => {
-  return `export async function GET(request: Request) {
+export const routeTemplate = (): string => {
+  return `export async function GET(request: Request) {}
 
-}
+export async function HEAD(request: Request) {}
+
+export async function POST(request: Request) {}
+
+export async function PUT(request: Request) {}
+
+export async function DELETE(request: Request) {}
+
+export async function PATCH(request: Request) {}
 `;
 };
 
-export const routePostTemplate = (): string => {
-  return `export async function POST(request: Request) {
-
-}
-`;
-};
-
-export const routeDeleteTemplate = (): string => {
-  return `export async function DELETE(request: Request) {
-
-}
-`;
-};
-
-export const routePatchTemplate = (): string => {
-  return `export async function PATCH(request: Request) {
-
-}
-`;
-};
-
-export const routePutTemplate = (): string => {
-  return `export async function PUT(request: Request) {
-
-}
-`;
-};
-
-export const routeHeadTemplate = (): string => {
-  return `export async function HEAD(request: Request) {
-
-}
-`;
+export const defaultFileTemplate = (): string => {
+  return `export default function Default() {}`;
 };

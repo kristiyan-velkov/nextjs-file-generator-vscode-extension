@@ -406,6 +406,7 @@
     "ansi-color": "^0.2.1",
     "execa": "^8.0.1",
     "fs-extra": "^11.2.0",
+    "next-cli-turbo": "^0.0.9",
     "path": "^0.12.7"
   }
 }

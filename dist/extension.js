@@ -28,10 +28,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const vscode = __importStar(__webpack_require__(1));
-const path = __importStar(__webpack_require__(3));
-const generateFileExtension_1 = __webpack_require__(42);
+const vscode = __importStar(__webpack_require__(42));
+const path = __importStar(__webpack_require__(16));
+const generateFileExtension_1 = __importDefault(__webpack_require__(44));
 function getConfigurationSettings(fileName) {
     const config = vscode.workspace.getConfiguration("nextFileGenerator");
     const fileExtension = config.get("fileExtension", ".tsx");
@@ -58,10 +61,10 @@ function activate(context) {
         const loading = getConfigurationSettings("loading");
         const error = getConfigurationSettings("error");
         const notFound = getConfigurationSettings("not-found");
-        (0, generateFileExtension_1.generateFile)("page", targetPath, pageTemplate, fileExtension);
-        (0, generateFileExtension_1.generateFile)("loading", targetPath, loading.template, fileExtension);
-        (0, generateFileExtension_1.generateFile)("error", targetPath, error.template, fileExtension);
-        (0, generateFileExtension_1.generateFile)("not-found", targetPath, notFound.template, fileExtension);
+        (0, generateFileExtension_1.default)("page", targetPath, pageTemplate, fileExtension);
+        (0, generateFileExtension_1.default)("loading", targetPath, loading.template, fileExtension);
+        (0, generateFileExtension_1.default)("error", targetPath, error.template, fileExtension);
+        (0, generateFileExtension_1.default)("not-found", targetPath, notFound.template, fileExtension);
     });
     const generateSelected = vscode.commands.registerCommand("nextjs.files.selected", async (folderUri) => {
         if (!folderUri) {
@@ -90,7 +93,7 @@ function activate(context) {
         }
         selectedFiles.forEach((file) => {
             const { fileExtension, template } = getConfigurationSettings(file.label);
-            (0, generateFileExtension_1.generateFile)(file.label, folderUri.fsPath, template, fileExtension).catch((error) => {
+            (0, generateFileExtension_1.default)(file.label, folderUri.fsPath, template, fileExtension).catch((error) => {
                 vscode.window.showErrorMessage(`Files creation failed: ${error}`);
             });
         });
@@ -105,18 +108,25 @@ function activate(context) {
         });
         const type = "page";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
-            .then((fileCreated) => {
-            if (fileCreated) {
-                vscode.window.showInformationMessage("File was created successfully!");
-            }
-            else {
-                vscode.window.showErrorMessage(`File already exists`);
-            }
-        })
-            .catch((error) => {
-            vscode.window.showErrorMessage(`File creation failed: ${error}`);
-        });
+        try {
+            await (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension, name ?? "");
+        }
+        catch (err) {
+            console.log(err);
+        }
+        // generateFile(type, folderUri.fsPath, template, fileExtension, name ?? "")
+        //   .then((fileCreated) => {
+        //     if (fileCreated) {
+        //       vscode.window.showInformationMessage(
+        //         "File was created successfully!"
+        //       );
+        //     } else {
+        //       vscode.window.showErrorMessage(`File already exists`);
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     vscode.window.showErrorMessage(`File creation failed: ${error}`);
+        //   });
     });
     const generateLoading = vscode.commands.registerCommand("nextjs.file.loading", async (folderUri) => {
         if (!folderUri) {
@@ -128,7 +138,7 @@ function activate(context) {
         });
         const type = "loading";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
+        (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension, name ?? "")
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -151,7 +161,7 @@ function activate(context) {
         });
         const type = "layout";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
+        (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension, name ?? "")
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -174,7 +184,7 @@ function activate(context) {
         });
         const type = "template";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
+        (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension, name ?? "")
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -194,7 +204,7 @@ function activate(context) {
         }
         const type = "error";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -214,7 +224,7 @@ function activate(context) {
         }
         const type = "not-found";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -234,7 +244,7 @@ function activate(context) {
         }
         const type = "middleware";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -254,7 +264,7 @@ function activate(context) {
         }
         const type = "global-error";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -274,7 +284,7 @@ function activate(context) {
         }
         const type = "route";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -294,7 +304,7 @@ function activate(context) {
         }
         const type = "default";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.default)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -315,28 +325,8 @@ exports.deactivate = deactivate;
 
 
 /***/ }),
-/* 1 */
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("vscode");
-
-/***/ }),
+/* 1 */,
 /* 2 */
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("fs");
-
-/***/ }),
-/* 3 */
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("path");
-
-/***/ }),
-/* 4 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -344,9 +334,9 @@ module.exports = require("path");
 
 module.exports = {
   // Export promiseified graceful-fs:
-  ...__webpack_require__(5),
+  ...__webpack_require__(3),
   // Export extra methods:
-  ...__webpack_require__(15),
+  ...__webpack_require__(14),
   ...__webpack_require__(24),
   ...__webpack_require__(26),
   ...__webpack_require__(32),
@@ -359,15 +349,15 @@ module.exports = {
 
 
 /***/ }),
-/* 5 */
+/* 3 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 // This is adapted from https://github.com/normalize/mz
 // Copyright (c) 2014-2016 Jonathan Ong me@jongleberry.com and Contributors
-const u = (__webpack_require__(6).fromCallback)
-const fs = __webpack_require__(7)
+const u = (__webpack_require__(4).fromCallback)
+const fs = __webpack_require__(5)
 
 const api = [
   'access',
@@ -506,7 +496,7 @@ if (typeof fs.realpath.native === 'function') {
 
 
 /***/ }),
-/* 6 */
+/* 4 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -537,15 +527,15 @@ exports.fromPromise = function (fn) {
 
 
 /***/ }),
-/* 7 */
+/* 5 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var fs = __webpack_require__(2)
-var polyfills = __webpack_require__(8)
-var legacy = __webpack_require__(10)
-var clone = __webpack_require__(12)
+var fs = __webpack_require__(6)
+var polyfills = __webpack_require__(7)
+var legacy = __webpack_require__(9)
+var clone = __webpack_require__(11)
 
-var util = __webpack_require__(13)
+var util = __webpack_require__(12)
 
 /* istanbul ignore next - node 0.x polyfill */
 var gracefulQueue
@@ -626,7 +616,7 @@ if (!fs[gracefulQueue]) {
   if (/\bgfs4\b/i.test(process.env.NODE_DEBUG || '')) {
     process.on('exit', function() {
       debug(fs[gracefulQueue])
-      __webpack_require__(14).equal(fs[gracefulQueue].length, 0)
+      __webpack_require__(13).equal(fs[gracefulQueue].length, 0)
     })
   }
 }
@@ -991,10 +981,17 @@ function retry () {
 
 
 /***/ }),
-/* 8 */
+/* 6 */
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs");
+
+/***/ }),
+/* 7 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var constants = __webpack_require__(9)
+var constants = __webpack_require__(8)
 
 var origCwd = process.cwd
 var cwd = null
@@ -1352,17 +1349,17 @@ function patch (fs) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("constants");
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var Stream = (__webpack_require__(11).Stream)
+var Stream = (__webpack_require__(10).Stream)
 
 module.exports = legacy
 
@@ -1483,14 +1480,14 @@ function legacy (fs) {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("stream");
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ ((module) => {
 
 "use strict";
@@ -1520,18 +1517,32 @@ function clone (obj) {
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("util");
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+/* 14 */
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+const u = (__webpack_require__(4).fromPromise)
+module.exports = {
+  copy: u(__webpack_require__(15)),
+  copySync: __webpack_require__(23)
+}
+
 
 /***/ }),
 /* 15 */
@@ -1540,22 +1551,8 @@ module.exports = require("assert");
 "use strict";
 
 
-const u = (__webpack_require__(6).fromPromise)
-module.exports = {
-  copy: u(__webpack_require__(16)),
-  copySync: __webpack_require__(23)
-}
-
-
-/***/ }),
-/* 16 */
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-const fs = __webpack_require__(5)
-const path = __webpack_require__(3)
+const fs = __webpack_require__(3)
+const path = __webpack_require__(16)
 const { mkdirs } = __webpack_require__(17)
 const { pathExists } = __webpack_require__(20)
 const { utimesMillis } = __webpack_require__(21)
@@ -1732,12 +1729,19 @@ module.exports = copy
 
 
 /***/ }),
+/* 16 */
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("path");
+
+/***/ }),
 /* 17 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
-const u = (__webpack_require__(6).fromPromise)
+const u = (__webpack_require__(4).fromPromise)
 const { makeDir: _makeDir, makeDirSync } = __webpack_require__(18)
 const makeDir = u(_makeDir)
 
@@ -1758,7 +1762,7 @@ module.exports = {
 
 "use strict";
 
-const fs = __webpack_require__(5)
+const fs = __webpack_require__(3)
 const { checkPath } = __webpack_require__(19)
 
 const getMode = options => {
@@ -1797,7 +1801,7 @@ module.exports.makeDirSync = (dir, options) => {
 // The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-const path = __webpack_require__(3)
+const path = __webpack_require__(16)
 
 // https://github.com/nodejs/node/issues/8987
 // https://github.com/libuv/libuv/pull/1088
@@ -1820,8 +1824,8 @@ module.exports.checkPath = function checkPath (pth) {
 
 "use strict";
 
-const u = (__webpack_require__(6).fromPromise)
-const fs = __webpack_require__(5)
+const u = (__webpack_require__(4).fromPromise)
+const fs = __webpack_require__(3)
 
 function pathExists (path) {
   return fs.access(path).then(() => true).catch(() => false)
@@ -1840,8 +1844,8 @@ module.exports = {
 "use strict";
 
 
-const fs = __webpack_require__(5)
-const u = (__webpack_require__(6).fromPromise)
+const fs = __webpack_require__(3)
+const u = (__webpack_require__(4).fromPromise)
 
 async function utimesMillis (path, atime, mtime) {
   // if (!HAS_MILLIS_RES) return fs.utimes(path, atime, mtime, callback)
@@ -1883,9 +1887,9 @@ module.exports = {
 "use strict";
 
 
-const fs = __webpack_require__(5)
-const path = __webpack_require__(3)
-const u = (__webpack_require__(6).fromPromise)
+const fs = __webpack_require__(3)
+const path = __webpack_require__(16)
+const u = (__webpack_require__(4).fromPromise)
 
 function getStats (src, dest, opts) {
   const statFunc = opts.dereference
@@ -2048,8 +2052,8 @@ module.exports = {
 "use strict";
 
 
-const fs = __webpack_require__(7)
-const path = __webpack_require__(3)
+const fs = __webpack_require__(5)
+const path = __webpack_require__(16)
 const mkdirsSync = (__webpack_require__(17).mkdirsSync)
 const utimesMillisSync = (__webpack_require__(21).utimesMillisSync)
 const stat = __webpack_require__(22)
@@ -2216,9 +2220,9 @@ module.exports = copySync
 "use strict";
 
 
-const u = (__webpack_require__(6).fromPromise)
-const fs = __webpack_require__(5)
-const path = __webpack_require__(3)
+const u = (__webpack_require__(4).fromPromise)
+const fs = __webpack_require__(3)
+const path = __webpack_require__(16)
 const mkdir = __webpack_require__(17)
 const remove = __webpack_require__(25)
 
@@ -2262,8 +2266,8 @@ module.exports = {
 "use strict";
 
 
-const fs = __webpack_require__(7)
-const u = (__webpack_require__(6).fromCallback)
+const fs = __webpack_require__(5)
+const u = (__webpack_require__(4).fromCallback)
 
 function remove (path, callback) {
   fs.rm(path, { recursive: true, force: true }, callback)
@@ -2316,9 +2320,9 @@ module.exports = {
 "use strict";
 
 
-const u = (__webpack_require__(6).fromPromise)
-const path = __webpack_require__(3)
-const fs = __webpack_require__(5)
+const u = (__webpack_require__(4).fromPromise)
+const path = __webpack_require__(16)
+const fs = __webpack_require__(3)
 const mkdir = __webpack_require__(17)
 
 async function createFile (file) {
@@ -2389,9 +2393,9 @@ module.exports = {
 "use strict";
 
 
-const u = (__webpack_require__(6).fromPromise)
-const path = __webpack_require__(3)
-const fs = __webpack_require__(5)
+const u = (__webpack_require__(4).fromPromise)
+const path = __webpack_require__(16)
+const fs = __webpack_require__(3)
 const mkdir = __webpack_require__(17)
 const { pathExists } = __webpack_require__(20)
 const { areIdentical } = __webpack_require__(22)
@@ -2460,9 +2464,9 @@ module.exports = {
 "use strict";
 
 
-const u = (__webpack_require__(6).fromPromise)
-const path = __webpack_require__(3)
-const fs = __webpack_require__(5)
+const u = (__webpack_require__(4).fromPromise)
+const path = __webpack_require__(16)
+const fs = __webpack_require__(3)
 
 const { mkdirs, mkdirsSync } = __webpack_require__(17)
 
@@ -2534,11 +2538,11 @@ module.exports = {
 "use strict";
 
 
-const path = __webpack_require__(3)
-const fs = __webpack_require__(5)
+const path = __webpack_require__(16)
+const fs = __webpack_require__(3)
 const { pathExists } = __webpack_require__(20)
 
-const u = (__webpack_require__(6).fromPromise)
+const u = (__webpack_require__(4).fromPromise)
 
 /**
  * Function that returns two types of paths, one relative to symlink, and one
@@ -2642,8 +2646,8 @@ module.exports = {
 "use strict";
 
 
-const fs = __webpack_require__(5)
-const u = (__webpack_require__(6).fromPromise)
+const fs = __webpack_require__(3)
+const u = (__webpack_require__(4).fromPromise)
 
 async function symlinkType (srcpath, type) {
   if (type) return type
@@ -2683,7 +2687,7 @@ module.exports = {
 "use strict";
 
 
-const u = (__webpack_require__(6).fromPromise)
+const u = (__webpack_require__(4).fromPromise)
 const jsonFile = __webpack_require__(33)
 
 jsonFile.outputJson = u(__webpack_require__(36))
@@ -2723,11 +2727,11 @@ module.exports = {
 
 let _fs
 try {
-  _fs = __webpack_require__(7)
+  _fs = __webpack_require__(5)
 } catch (_) {
-  _fs = __webpack_require__(2)
+  _fs = __webpack_require__(6)
 }
-const universalify = __webpack_require__(6)
+const universalify = __webpack_require__(4)
 const { stringify, stripBom } = __webpack_require__(35)
 
 async function _readFile (file, options = {}) {
@@ -2857,9 +2861,9 @@ module.exports = outputJson
 "use strict";
 
 
-const u = (__webpack_require__(6).fromPromise)
-const fs = __webpack_require__(5)
-const path = __webpack_require__(3)
+const u = (__webpack_require__(4).fromPromise)
+const fs = __webpack_require__(3)
+const path = __webpack_require__(16)
 const mkdir = __webpack_require__(17)
 const pathExists = (__webpack_require__(20).pathExists)
 
@@ -2914,7 +2918,7 @@ module.exports = outputJsonSync
 "use strict";
 
 
-const u = (__webpack_require__(6).fromPromise)
+const u = (__webpack_require__(4).fromPromise)
 module.exports = {
   move: u(__webpack_require__(40)),
   moveSync: __webpack_require__(41)
@@ -2928,9 +2932,9 @@ module.exports = {
 "use strict";
 
 
-const fs = __webpack_require__(5)
-const path = __webpack_require__(3)
-const { copy } = __webpack_require__(15)
+const fs = __webpack_require__(3)
+const path = __webpack_require__(16)
+const { copy } = __webpack_require__(14)
 const { remove } = __webpack_require__(25)
 const { mkdirp } = __webpack_require__(17)
 const { pathExists } = __webpack_require__(20)
@@ -2994,9 +2998,9 @@ module.exports = move
 "use strict";
 
 
-const fs = __webpack_require__(7)
-const path = __webpack_require__(3)
-const copySync = (__webpack_require__(15).copySync)
+const fs = __webpack_require__(5)
+const path = __webpack_require__(16)
+const copySync = (__webpack_require__(14).copySync)
 const removeSync = (__webpack_require__(25).removeSync)
 const mkdirpSync = (__webpack_require__(17).mkdirpSync)
 const stat = __webpack_require__(22)
@@ -3051,77 +3055,50 @@ module.exports = moveSync
 
 /***/ }),
 /* 42 */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((module) => {
 
 "use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.generateFile = void 0;
-const fs_extra_1 = __importDefault(__webpack_require__(4));
-const path_1 = __importDefault(__webpack_require__(3));
-const templates_1 = __webpack_require__(45);
-const defaultTemplates = {
-    page: templates_1.pageTemplate,
-    loading: templates_1.loadingTemplate,
-    layout: templates_1.layoutTemplate,
-    error: templates_1.errorTemplate,
-    template: templates_1.templateFile,
-    "global-error": templates_1.globalErrorsTemplate,
-    "not-found": templates_1.notFoundTemplate,
-    middleware: templates_1.middlewareTemplate,
-    route: templates_1.routeTemplate,
-    default: templates_1.defaultFileTemplate,
-};
-async function generateFile(type, filePath, fileTemplate, fileExtension = ".tsx", name = "", customType = "") {
-    const fileName = `${type}${fileExtension}`;
-    const pathToCreateFile = path_1.default.join(filePath, fileName);
-    const templateContent = fileTemplate || defaultTemplates[type || customType](name);
-    try {
-        await fs_extra_1.default.ensureDir(filePath);
-        const fileExists = await fs_extra_1.default.pathExists(pathToCreateFile);
-        if (fileExists) {
-            return false;
-        }
-        await fs_extra_1.default.writeFile(pathToCreateFile, templateContent, { encoding: "utf8" });
-        return true;
-    }
-    catch (error) {
-        throw new Error(`Error creating file: ${error instanceof Error ? error.message : String(error)}`);
-    }
-}
-exports.generateFile = generateFile;
-
+module.exports = require("vscode");
 
 /***/ }),
-/* 43 */,
-/* 44 */,
-/* 45 */
-/***/ ((__unused_webpack_module, exports) => {
+/* 43 */
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.defaultFileTemplate = exports.routeTemplate = exports.middlewareTemplate = exports.templateFile = exports.notFoundTemplate = exports.globalErrorsTemplate = exports.errorTemplate = exports.loadingTemplate = exports.layoutTemplate = exports.pageTemplate = void 0;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   defaultFileTemplate: () => (/* binding */ defaultFileTemplate),
+/* harmony export */   errorTemplate: () => (/* binding */ errorTemplate),
+/* harmony export */   globalErrorsTemplate: () => (/* binding */ globalErrorsTemplate),
+/* harmony export */   layoutTemplate: () => (/* binding */ layoutTemplate),
+/* harmony export */   loadingTemplate: () => (/* binding */ loadingTemplate),
+/* harmony export */   middlewareTemplate: () => (/* binding */ middlewareTemplate),
+/* harmony export */   notFoundTemplate: () => (/* binding */ notFoundTemplate),
+/* harmony export */   pageTemplate: () => (/* binding */ pageTemplate),
+/* harmony export */   routeTemplate: () => (/* binding */ routeTemplate),
+/* harmony export */   templateFile: () => (/* binding */ templateFile)
+/* harmony export */ });
 function validateName(name) {
-    if (/[^a-zA-Z\s'-]/.test(name)) {
-        return "";
-    }
-    const cleanedName = name.replace(/[^a-zA-Z\s'-]/g, "");
-    return cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1);
+  if (/[^a-zA-Z\s'-]/.test(name)) {
+    return "";
+  }
+
+  const cleanedName = name.replace(/[^a-zA-Z\s'-]/g, "");
+  return cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1);
 }
+
 const pageTemplate = (pageName) => {
-    const name = validateName(pageName);
-    return `export default function ${name}Page() {
+  const name = validateName(pageName);
+
+  return `export default function ${name}Page() {
   return <h1>Welcome to ${name}page!</h1>;
 }`;
 };
-exports.pageTemplate = pageTemplate;
+
 const layoutTemplate = (layoutName) => {
-    const name = validateName(layoutName);
-    return `export default function ${name}Layout({
+  const name = validateName(layoutName);
+
+  return `export default function ${name}Layout({
   children,
 }: {
   children: React.ReactNode;
@@ -3129,17 +3106,17 @@ const layoutTemplate = (layoutName) => {
   return <section>{children}</section>;
 }`;
 };
-exports.layoutTemplate = layoutTemplate;
+
 const loadingTemplate = (loadingName) => {
-    const name = validateName(loadingName);
-    return `export default function ${name}Loading() {
+  const name = validateName(loadingName);
+  return `export default function ${name}Loading() {
   // Or a custom loading skeleton component
   return <p>Loading...</p>
 }`;
 };
-exports.loadingTemplate = loadingTemplate;
+
 const errorTemplate = () => {
-    return `"use client";
+  return `"use client";
 
 import { useEffect } from "react";
 
@@ -3170,9 +3147,9 @@ export default function Error({
   );
 }`;
 };
-exports.errorTemplate = errorTemplate;
+
 const globalErrorsTemplate = () => {
-    return `"use client";
+  return `"use client";
 
 export default function GlobalError({
   error,
@@ -3191,9 +3168,9 @@ export default function GlobalError({
   );
 }`;
 };
-exports.globalErrorsTemplate = globalErrorsTemplate;
+
 const notFoundTemplate = () => {
-    return `import Link from "next/link";
+  return `import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -3206,10 +3183,10 @@ export default function NotFound() {
 }
 `;
 };
-exports.notFoundTemplate = notFoundTemplate;
+
 const templateFile = (templateName) => {
-    const name = validateName(templateName);
-    return `export default function ${name}Template({
+  const name = validateName(templateName);
+  return `export default function ${name}Template({
   children,
 }: {
   children: React.ReactNode;
@@ -3218,9 +3195,9 @@ const templateFile = (templateName) => {
 }
 `;
 };
-exports.templateFile = templateFile;
+
 const middlewareTemplate = () => {
-    return `import { NextRequest } from "next/server";
+  return `import { NextRequest } from "next/server";
 
 // This function can be marked async if using await inside
 export function middleware(request: NextRequest) {
@@ -3231,9 +3208,9 @@ export const config = {
   matcher: "",
 };`;
 };
-exports.middlewareTemplate = middlewareTemplate;
+
 const routeTemplate = () => {
-    return `export async function GET(request: Request) {}
+  return `export async function GET(request: Request) {}
 
 export async function HEAD(request: Request) {}
 
@@ -3246,11 +3223,72 @@ export async function DELETE(request: Request) {}
 export async function PATCH(request: Request) {}
 `;
 };
-exports.routeTemplate = routeTemplate;
+
 const defaultFileTemplate = () => {
-    return `export default function Default() {}`;
+  return `export default function Default() {}`;
 };
-exports.defaultFileTemplate = defaultFileTemplate;
+
+
+/***/ }),
+/* 44 */
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ generateFile)
+/* harmony export */ });
+/* harmony import */ var fs_extra__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16);
+/* harmony import */ var next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(43);
+
+
+
+
+
+const defaultTemplates = {
+  page: next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.pageTemplate,
+  loading: next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.loadingTemplate,
+  layout: next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.layoutTemplate,
+  error: next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.errorTemplate,
+  template: next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.templateFile,
+  "global-error": next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.globalErrorsTemplate,
+  "not-found": next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.notFoundTemplate,
+  middleware: next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.middlewareTemplate,
+  route: next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.routeTemplate,
+  default: next_cli_turbo_templates_js__WEBPACK_IMPORTED_MODULE_1__.defaultFileTemplate,
+};
+
+async function generateFile(
+  type,
+  filePath,
+  fileTemplate,
+  fileExtension = ".tsx",
+  name = "",
+  customType = ""
+) {
+  const fileName = `${type}${fileExtension}`;
+  const pathToCreateFile = path__WEBPACK_IMPORTED_MODULE_0__.join(filePath, fileName);
+  const templateContent =
+    fileTemplate || defaultTemplates[type || customType](name);
+
+  try {
+    await fs_extra__WEBPACK_IMPORTED_MODULE_2__.ensureDir(filePath);
+    const fileExists = await fs_extra__WEBPACK_IMPORTED_MODULE_2__.pathExists(pathToCreateFile);
+    if (fileExists) {
+      return false;
+    }
+
+    await fs_extra__WEBPACK_IMPORTED_MODULE_2__.writeFile(pathToCreateFile, templateContent, { encoding: "utf8" });
+    return true;
+  } catch (error) {
+    throw new Error(
+      `Error creating file: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
+  }
+}
 
 
 /***/ })
@@ -3279,6 +3317,35 @@ exports.defaultFileTemplate = defaultFileTemplate;
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /************************************************************************/
 /******/ 	

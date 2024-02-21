@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { generateFile } from "./utils/generateFileExtension";
+import generateFile from "next-cli-turbo/generateFileExtension";
 
 interface TemplateConfig {
   [key: string]: string | undefined;
@@ -57,7 +57,7 @@ function activate(context: vscode.ExtensionContext) {
 
       const fileOptions = [
         { label: "page" },
-        {label: "loading"},
+        { label: "loading" },
         { label: "layout" },
         { label: "template" },
         { label: "default" },
@@ -109,23 +109,35 @@ function activate(context: vscode.ExtensionContext) {
       const type = "page";
       const { fileExtension, template } = getConfigurationSettings(type);
 
-      generateFile(type, folderUri.fsPath, template, fileExtension, name || "")
-        .then((fileCreated) => {
-          if (fileCreated) {
-            vscode.window.showInformationMessage(
-              "File was created successfully!"
-            );
-          } else {
-            vscode.window.showErrorMessage(`File already exists`);
-          }
-        })
-        .catch((error) => {
-          vscode.window.showErrorMessage(`File creation failed: ${error}`);
-        });
+      try {
+        await generateFile(
+          type,
+          folderUri.fsPath,
+          template,
+          fileExtension,
+          name ?? ""
+        );
+      } catch (err) {
+        console.log(err);
+      }
+
+      // generateFile(type, folderUri.fsPath, template, fileExtension, name ?? "")
+      //   .then((fileCreated) => {
+      //     if (fileCreated) {
+      //       vscode.window.showInformationMessage(
+      //         "File was created successfully!"
+      //       );
+      //     } else {
+      //       vscode.window.showErrorMessage(`File already exists`);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     vscode.window.showErrorMessage(`File creation failed: ${error}`);
+      //   });
     }
   );
 
-const generateLoading = vscode.commands.registerCommand(
+  const generateLoading = vscode.commands.registerCommand(
     "nextjs.file.loading",
     async (folderUri: vscode.Uri) => {
       if (!folderUri) {
@@ -140,7 +152,7 @@ const generateLoading = vscode.commands.registerCommand(
       const type = "loading";
       const { fileExtension, template } = getConfigurationSettings(type);
 
-      generateFile(type, folderUri.fsPath, template, fileExtension, name || "")
+      generateFile(type, folderUri.fsPath, template, fileExtension, name ?? "")
         .then((fileCreated) => {
           if (fileCreated) {
             vscode.window.showInformationMessage(
@@ -171,7 +183,7 @@ const generateLoading = vscode.commands.registerCommand(
       const type = "layout";
       const { fileExtension, template } = getConfigurationSettings(type);
 
-      generateFile(type, folderUri.fsPath, template, fileExtension, name || "")
+      generateFile(type, folderUri.fsPath, template, fileExtension, name ?? "")
         .then((fileCreated) => {
           if (fileCreated) {
             vscode.window.showInformationMessage(
@@ -202,7 +214,7 @@ const generateLoading = vscode.commands.registerCommand(
       const type = "template";
       const { fileExtension, template } = getConfigurationSettings(type);
 
-      generateFile(type, folderUri.fsPath, template, fileExtension, name || "")
+      generateFile(type, folderUri.fsPath, template, fileExtension, name ?? "")
         .then((fileCreated) => {
           if (fileCreated) {
             vscode.window.showInformationMessage(
@@ -272,7 +284,7 @@ const generateLoading = vscode.commands.registerCommand(
     }
   );
 
-    const generateMiddleware = vscode.commands.registerCommand(
+  const generateMiddleware = vscode.commands.registerCommand(
     "nextjs.file.middleware",
     async (folderUri: vscode.Uri) => {
       if (!folderUri) {

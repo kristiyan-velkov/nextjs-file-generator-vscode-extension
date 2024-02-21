@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { generateFile } from "./utils/generateFile";
+import { generateFile } from "./utils/generateFileExtension";
 
 interface TemplateConfig {
   [key: string]: string | undefined;

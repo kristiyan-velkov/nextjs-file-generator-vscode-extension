@@ -31,7 +31,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const vscode = __importStar(__webpack_require__(1));
 const path = __importStar(__webpack_require__(3));
-const generateFile_1 = __webpack_require__(44);
+const generateFileExtension_1 = __webpack_require__(42);
 function getConfigurationSettings(fileName) {
     const config = vscode.workspace.getConfiguration("nextFileGenerator");
     const fileExtension = config.get("fileExtension", ".tsx");
@@ -58,10 +58,10 @@ function activate(context) {
         const loading = getConfigurationSettings("loading");
         const error = getConfigurationSettings("error");
         const notFound = getConfigurationSettings("not-found");
-        (0, generateFile_1.generateFile)("page", targetPath, pageTemplate, fileExtension);
-        (0, generateFile_1.generateFile)("loading", targetPath, loading.template, fileExtension);
-        (0, generateFile_1.generateFile)("error", targetPath, error.template, fileExtension);
-        (0, generateFile_1.generateFile)("not-found", targetPath, notFound.template, fileExtension);
+        (0, generateFileExtension_1.generateFile)("page", targetPath, pageTemplate, fileExtension);
+        (0, generateFileExtension_1.generateFile)("loading", targetPath, loading.template, fileExtension);
+        (0, generateFileExtension_1.generateFile)("error", targetPath, error.template, fileExtension);
+        (0, generateFileExtension_1.generateFile)("not-found", targetPath, notFound.template, fileExtension);
     });
     const generateSelected = vscode.commands.registerCommand("nextjs.files.selected", async (folderUri) => {
         if (!folderUri) {
@@ -90,7 +90,7 @@ function activate(context) {
         }
         selectedFiles.forEach((file) => {
             const { fileExtension, template } = getConfigurationSettings(file.label);
-            (0, generateFile_1.generateFile)(file.label, folderUri.fsPath, template, fileExtension).catch((error) => {
+            (0, generateFileExtension_1.generateFile)(file.label, folderUri.fsPath, template, fileExtension).catch((error) => {
                 vscode.window.showErrorMessage(`Files creation failed: ${error}`);
             });
         });
@@ -105,7 +105,7 @@ function activate(context) {
         });
         const type = "page";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -128,7 +128,7 @@ function activate(context) {
         });
         const type = "loading";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -151,7 +151,7 @@ function activate(context) {
         });
         const type = "layout";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -174,7 +174,7 @@ function activate(context) {
         });
         const type = "template";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension, name || "")
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -194,7 +194,7 @@ function activate(context) {
         }
         const type = "error";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -214,7 +214,7 @@ function activate(context) {
         }
         const type = "not-found";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -234,7 +234,7 @@ function activate(context) {
         }
         const type = "middleware";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -254,7 +254,7 @@ function activate(context) {
         }
         const type = "global-error";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -274,7 +274,7 @@ function activate(context) {
         }
         const type = "route";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -294,7 +294,7 @@ function activate(context) {
         }
         const type = "default";
         const { fileExtension, template } = getConfigurationSettings(type);
-        (0, generateFile_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
+        (0, generateFileExtension_1.generateFile)(type, folderUri.fsPath, template, fileExtension)
             .then((fileCreated) => {
             if (fileCreated) {
                 vscode.window.showInformationMessage("File was created successfully!");
@@ -3050,9 +3050,7 @@ module.exports = moveSync
 
 
 /***/ }),
-/* 42 */,
-/* 43 */,
-/* 44 */
+/* 42 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -3098,6 +3096,8 @@ exports.generateFile = generateFile;
 
 
 /***/ }),
+/* 43 */,
+/* 44 */,
 /* 45 */
 /***/ ((__unused_webpack_module, exports) => {
 
